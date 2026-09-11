@@ -15,6 +15,7 @@ BCA PBL academic prototype: predict **Fire** vs **Not Fire** from environmental 
 | EDA notebook + figures | Done |
 | Random Forest training + evaluation | **Done** |
 | Saved model Pipeline | **Done** (`models/random_forest_pipeline.joblib`) |
+| Prediction module (`src/predict.py`) | **Done** |
 | Flask app | **Not started** |
 
 ## Dataset
@@ -44,7 +45,8 @@ Dataset (UCI raw)
 → Random Forest (Pipeline: preprocess + model)
 → Held-out evaluation
 → Saved model artifacts
-→ CLI + Flask interface     [next]
+→ Prediction module         [done]
+→ Flask interface           [next]
 ```
 
 ## Preprocessing decisions (approved)
@@ -94,18 +96,51 @@ Full write-up: `reports/model_training_report.md`
 │   ├── prepare_data.py
 │   ├── eda.py
 │   ├── train.py
-│   └── evaluate.py
+│   ├── evaluate.py
+│   └── predict.py
 ├── reports/
 │   ├── figures/
 │   ├── metrics/
 │   ├── dataset_inspection.md
 │   ├── data_preparation_report.md
-│   └── model_training_report.md
+│   ├── model_training_report.md
+│   └── prediction_module.md
 ├── models/                  # Saved Pipeline + training metadata
 ├── app/                     # Future Flask UI
 ├── requirements.txt
 └── README.md
 ```
+
+## Prediction module
+
+Loads the saved Pipeline (`models/random_forest_pipeline.joblib`) and applies the **same** training-time preprocessing automatically.
+
+```python
+from src.predict import predict_fire
+
+result = predict_fire({
+    "Temperature": 32,
+    "RH": 55,
+    "Ws": 15,
+    "Rain": 0.0,
+    "FFMC": 86.0,
+    "DMC": 20.0,
+    "DC": 50.0,
+    "ISI": 6.0,
+    "Region": "Bejaia",
+    "month": 8,
+})
+# result["prediction"] -> "Fire" or "No Fire"
+# result["probability_fire"] -> float in [0, 1]
+```
+
+CLI integration demo (uses cleaned processed rows; not a new evaluation metric):
+
+```bash
+PYTHONPATH=. python -m src.predict --demo-from-processed 3
+```
+
+Details: `reports/prediction_module.md`
 
 ## Setup and run
 
@@ -125,6 +160,9 @@ PYTHONPATH=. python -m src.train
 
 # 4) Reload and print saved metrics
 PYTHONPATH=. python -m src.evaluate
+
+# 5) Prediction module integration demo
+PYTHONPATH=. python -m src.predict --demo-from-processed 3
 ```
 
 Then open `notebooks/eda_and_training.ipynb` for interactive EDA.
