@@ -1,0 +1,73 @@
+{
+  "n_test": 49,
+  "accuracy": 1.0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "confusion_matrix": [
+    [
+      21,
+      0
+    ],
+    [
+      0,
+      28
+    ]
+  ],
+  "confusion_matrix_labels": {
+    "rows": "true label [not fire=0, fire=1]",
+    "columns": "predicted label [not fire=0, fire=1]",
+    "layout": [
+      [
+        "TN",
+        "FP"
+      ],
+      [
+        "FN",
+        "TP"
+      ]
+    ]
+  },
+  "classification_report_dict": {
+    "not fire": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 21.0
+    },
+    "fire": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 28.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 49.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 49.0
+    }
+  },
+  "classification_report_text": "              precision    recall  f1-score   support\n\n    not fire     1.0000    1.0000    1.0000        21\n        fire     1.0000    1.0000    1.0000        28\n\n    accuracy                         1.0000        49\n   macro avg     1.0000    1.0000    1.0000        49\nweighted avg     1.0000    1.0000    1.0000        49\n",
+  "feature_importance": {
+    "ISI": 0.427536,
+    "FFMC": 0.285256,
+    "DC": 0.107029,
+    "DMC": 0.064933,
+    "Rain": 0.053268,
+    "Temperature": 0.039145,
+    "RH": 0.012548,
+    "Ws": 0.005137,
+    "month": 0.002727,
+    "Region_Bejaia": 0.001369,
+    "Region_Sidi-Bel-Abbes": 0.001053
+  },
+  "notes": "Metrics are from a single stratified held-out test set on a small academic dataset (243 cleaned rows). They are not proof of real-world or production performance."
+}

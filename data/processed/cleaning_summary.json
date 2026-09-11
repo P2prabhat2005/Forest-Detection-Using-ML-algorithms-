@@ -1,0 +1,54 @@
+{
+  "raw_path": "/workspace/data/raw/Algerian_forest_fires_dataset_UPDATE.csv",
+  "rows_parsed": 244,
+  "rows_dropped_malformed": 1,
+  "dropped_row_details": [
+    {
+      "_source_line": 171,
+      "Region": "Sidi-Bel-Abbes",
+      "DC": "14.6 9",
+      "FWI": "fire",
+      "Classes": ""
+    }
+  ],
+  "rows_kept": 243,
+  "features_kept": [
+    "Temperature",
+    "RH",
+    "Ws",
+    "Rain",
+    "FFMC",
+    "DMC",
+    "DC",
+    "ISI",
+    "Region",
+    "month"
+  ],
+  "features_excluded_primary_model": [
+    "FWI",
+    "BUI",
+    "day",
+    "year"
+  ],
+  "exclusion_rationale": "FWI and BUI are excluded from the primary PBL model because they are composite/redundant with other fire-weather variables, giving a clearer and less redundant feature set. day is excluded to reduce calendar memorization risk on a tiny single-year sample. year is excluded because it is constant (2012). This is a modeling choice, not a claim that FWI/BUI are universally useless.",
+  "target_mapping": {
+    "not fire": 0,
+    "fire": 1
+  },
+  "class_counts": {
+    "fire": 137,
+    "not fire": 106
+  },
+  "class_counts_encoded": {
+    "0": 106,
+    "1": 137
+  },
+  "region_counts": {
+    "Bejaia": 122,
+    "Sidi-Bel-Abbes": 121
+  },
+  "parse_notes": [
+    "line 171: expected 14 fields, got 13"
+  ],
+  "processed_path": "/workspace/data/processed/algerian_forest_fires_cleaned.csv"
+}
