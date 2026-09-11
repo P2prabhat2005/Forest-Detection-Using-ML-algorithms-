@@ -1,6 +1,6 @@
 # Forest Fire Detection Using ML Algorithms
 
-BCA PBL academic prototype: predict **Fire** vs **Not Fire** from environmental / fire-weather features using a **Random Forest** classifier (training not started yet).
+BCA PBL academic prototype: predict **Fire** vs **Not Fire** from environmental / fire-weather features using a **Random Forest** classifier.
 
 **Scope:** supervised learning prototype with CLI + simple Flask demo later. Not a real-time emergency system.
 
@@ -11,9 +11,10 @@ BCA PBL academic prototype: predict **Fire** vs **Not Fire** from environmental 
 | Project structure | Done |
 | Official UCI dataset in `data/raw/` | Done (unchanged) |
 | Cleaning + validation modules | Done |
-| Processed dataset in `data/processed/` | Done |
+| Processed dataset in `data/processed/` | Done (243 rows) |
 | EDA notebook + figures | Done |
-| Random Forest training | **Not started** |
+| Random Forest training + evaluation | **Done** |
+| Saved model Pipeline | **Done** (`models/random_forest_pipeline.joblib`) |
 | Flask app | **Not started** |
 
 ## Dataset
@@ -39,10 +40,10 @@ Dataset (UCI raw)
 → Data cleaning / validation
 → EDA
 → Feature preparation (shared sklearn preprocessor)
-→ Train/Test split          [next]
-→ Random Forest             [next]
-→ Evaluation                [next]
-→ Saved model               [next]
+→ Stratified train/test split
+→ Random Forest (Pipeline: preprocess + model)
+→ Held-out evaluation
+→ Saved model artifacts
 → CLI + Flask interface     [next]
 ```
 
@@ -62,6 +63,21 @@ Dataset (UCI raw)
 
 Details: `reports/data_preparation_report.md`
 
+## Model training summary
+
+| Item | Value |
+|------|-------|
+| Algorithm | RandomForestClassifier |
+| Split | Stratified 80/20 (`test_size=0.20`, `random_state=42`) |
+| Train / test rows | 194 / 49 |
+| Preprocessing | Fitted **only on train** inside sklearn Pipeline |
+| Held-out accuracy / precision / recall / F1 | 1.00 / 1.00 / 1.00 / 1.00 |
+| Train-only 5-fold CV accuracy (mean ± std) | 0.9794 ± 0.0192 |
+
+**Important limitation:** The dataset is small (243 cleaned rows, one country, one year). Perfect held-out scores on 49 test rows do **not** prove real-world or production performance.
+
+Full write-up: `reports/model_training_report.md`
+
 ## Project structure
 
 ```text
@@ -76,29 +92,39 @@ Details: `reports/data_preparation_report.md`
 │   ├── data_cleaning.py
 │   ├── preprocessing.py
 │   ├── prepare_data.py
-│   └── eda.py
+│   ├── eda.py
+│   ├── train.py
+│   └── evaluate.py
 ├── reports/
 │   ├── figures/
+│   ├── metrics/
 │   ├── dataset_inspection.md
-│   └── data_preparation_report.md
-├── models/                  # Future saved model artifacts
+│   ├── data_preparation_report.md
+│   └── model_training_report.md
+├── models/                  # Saved Pipeline + training metadata
 ├── app/                     # Future Flask UI
 ├── requirements.txt
 └── README.md
 ```
 
-## Setup and run (this phase)
+## Setup and run
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 
-# Clean raw → processed
+# 1) Clean raw → processed
 PYTHONPATH=. python -m src.prepare_data
 
-# Generate EDA figures
+# 2) EDA figures
 PYTHONPATH=. python -m src.eda
+
+# 3) Train Random Forest + evaluate + save artifacts
+PYTHONPATH=. python -m src.train
+
+# 4) Reload and print saved metrics
+PYTHONPATH=. python -m src.evaluate
 ```
 
-Then open `notebooks/eda_and_training.ipynb` for interactive EDA (no RF training in this stage).
+Then open `notebooks/eda_and_training.ipynb` for interactive EDA.

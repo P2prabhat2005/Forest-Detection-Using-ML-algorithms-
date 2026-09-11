@@ -1,0 +1,113 @@
+{
+  "dataset_path": "/workspace/data/processed/algerian_forest_fires_cleaned.csv",
+  "n_total_rows": 243,
+  "n_train": 194,
+  "n_test": 49,
+  "test_size": 0.2,
+  "random_state": 42,
+  "split_strategy": "stratified train_test_split",
+  "test_size_rationale": "TEST_SIZE=0.20 keeps most of the small 243-row sample for training while retaining a stratified held-out test set (~20%) for unbiased evaluation. This is a practical choice for a tiny academic dataset, not an optimized production split.",
+  "feature_columns": [
+    "Temperature",
+    "RH",
+    "Ws",
+    "Rain",
+    "FFMC",
+    "DMC",
+    "DC",
+    "ISI",
+    "Region",
+    "month"
+  ],
+  "target_column": "Classes_encoded",
+  "target_mapping": {
+    "not fire": 0,
+    "fire": 1
+  },
+  "train_class_counts": {
+    "0_not_fire": 85,
+    "1_fire": 109
+  },
+  "test_class_counts": {
+    "0_not_fire": 21,
+    "1_fire": 28
+  },
+  "random_forest_hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": null,
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "max_features": "sqrt",
+    "bootstrap": true,
+    "class_weight": null,
+    "n_jobs": -1
+  },
+  "pipeline_steps": [
+    "preprocess",
+    "model"
+  ],
+  "model_path": "/workspace/models/random_forest_pipeline.joblib",
+  "limitation_note": "The dataset has only 243 cleaned rows from one country and one year (2012). Held-out metrics are useful for this academic prototype but must not be interpreted as real-world or production performance.",
+  "cross_validation_on_train_only": {
+    "accuracy": {
+      "fold_scores": [
+        0.9744,
+        1.0,
+        1.0,
+        0.9487,
+        0.9737
+      ],
+      "mean": 0.9794,
+      "std": 0.0192
+    },
+    "precision": {
+      "fold_scores": [
+        1.0,
+        1.0,
+        1.0,
+        0.9545,
+        0.9545
+      ],
+      "mean": 0.9818,
+      "std": 0.0223
+    },
+    "recall": {
+      "fold_scores": [
+        0.9545,
+        1.0,
+        1.0,
+        0.9545,
+        1.0
+      ],
+      "mean": 0.9818,
+      "std": 0.0223
+    },
+    "f1": {
+      "fold_scores": [
+        0.9767,
+        1.0,
+        1.0,
+        0.9545,
+        0.9767
+      ],
+      "mean": 0.9816,
+      "std": 0.0171
+    }
+  },
+  "held_out_test_metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "confusion_matrix": [
+      [
+        21,
+        0
+      ],
+      [
+        0,
+        28
+      ]
+    ]
+  }
+}
