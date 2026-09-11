@@ -1,25 +1,30 @@
 # Forest Fire Detection Using ML Algorithms
 
-Academic BCA PBL prototype: predict **Fire** vs **Not Fire** from environmental / Fire Weather Index (FWI) features using a **Random Forest** classifier.
+BCA PBL academic prototype: predict **Fire** vs **Not Fire** from environmental / fire-weather features using a **Random Forest** classifier (training not started yet).
 
-**Scope:** supervised learning prototype with CLI + simple Flask demo. Not a real-time emergency system.
+**Scope:** supervised learning prototype with CLI + simple Flask demo later. Not a real-time emergency system.
 
 ## Current status
 
-- Project folder structure created
-- Official UCI dataset downloaded into `data/raw/` (unchanged)
-- Dataset inspected; training / Flask app **not started yet** (awaiting preprocessing approval)
+| Step | Status |
+|------|--------|
+| Project structure | Done |
+| Official UCI dataset in `data/raw/` | Done (unchanged) |
+| Cleaning + validation modules | Done |
+| Processed dataset in `data/processed/` | Done |
+| EDA notebook + figures | Done |
+| Random Forest training | **Not started** |
+| Flask app | **Not started** |
 
 ## Dataset
 
 | Item | Detail |
 |------|--------|
 | Name | Algerian Forest Fires |
-| Source | [UCI Machine Learning Repository — Dataset 547](https://archive.ics.uci.edu/dataset/547/algerian+forest+fires+dataset) |
+| Source | [UCI ML Repository — Dataset 547](https://archive.ics.uci.edu/dataset/547/algerian+forest+fires+dataset) |
 | DOI | [10.24432/C5KW4N](https://doi.org/10.24432/C5KW4N) |
-| Download used | Official UCI zip: `https://archive.ics.uci.edu/static/public/547/algerian+forest+fires+dataset.zip` |
 | Raw file | `data/raw/Algerian_forest_fires_dataset_UPDATE.csv` |
-| Task | Binary classification: Fire / Not Fire |
+| Processed file | `data/processed/algerian_forest_fires_cleaned.csv` (243 rows after dropping 1 malformed row) |
 
 ### Citation
 
@@ -27,27 +32,73 @@ Abid, Faroudja. (2019). *Algerian Forest Fires* [Dataset]. UCI Machine Learning 
 
 See also `data/raw/SOURCE.md`.
 
-## Planned project structure
+## Project pipeline
+
+```text
+Dataset (UCI raw)
+→ Data cleaning / validation
+→ EDA
+→ Feature preparation (shared sklearn preprocessor)
+→ Train/Test split          [next]
+→ Random Forest             [next]
+→ Evaluation                [next]
+→ Saved model               [next]
+→ CLI + Flask interface     [next]
+```
+
+## Preprocessing decisions (approved)
+
+**Keep for primary model:**  
+`Temperature`, `RH`, `Ws`, `Rain`, `FFMC`, `DMC`, `DC`, `ISI`, `Region`, `month`
+
+**Exclude from primary model:**  
+`FWI`, `BUI`, `day`, `year`
+
+- FWI/BUI excluded as composite/redundant with other fire-weather variables (modeling clarity, not a claim they are useless).
+- `day` excluded to reduce calendar memorization on a tiny single-year sample.
+- `year` excluded because it is constant (2012).
+- Malformed row **dropped** (not repaired).
+- Target encoding: `not fire → 0`, `fire → 1`.
+
+Details: `reports/data_preparation_report.md`
+
+## Project structure
 
 ```text
 ├── data/
-│   ├── raw/           # Original UCI CSV only (do not modify)
-│   └── processed/     # Cleaned outputs after approved preprocessing
-├── notebooks/         # EDA + training notebook (planned)
-├── src/               # Modular Python pipeline (planned)
-├── models/            # Saved model + preprocessing artifacts (planned)
-├── reports/figures/   # EDA / evaluation plots (planned)
-├── app/               # Simple Flask UI (planned)
+│   ├── raw/                 # Original UCI CSV (do not modify)
+│   └── processed/           # Cleaned modeling table
+├── notebooks/
+│   └── eda_and_training.ipynb
+├── src/
+│   ├── config.py
+│   ├── validation.py
+│   ├── data_cleaning.py
+│   ├── preprocessing.py
+│   ├── prepare_data.py
+│   └── eda.py
+├── reports/
+│   ├── figures/
+│   ├── dataset_inspection.md
+│   └── data_preparation_report.md
+├── models/                  # Future saved model artifacts
+├── app/                     # Future Flask UI
+├── requirements.txt
 └── README.md
 ```
 
-## Confirmed design decisions
+## Setup and run (this phase)
 
-1. Dataset: Algerian Forest Fires (UCI 547)
-2. Problem: supervised binary classification — Fire vs Not Fire
-3. Algorithm: Random Forest Classifier
-4. Interface: CLI + simple Flask web app
-5. Notebook: EDA and training notebook
-6. Libraries: Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn (+ Flask for UI)
-7. No database unless a later requirement appears
-8. Academic prototype only
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Clean raw → processed
+PYTHONPATH=. python -m src.prepare_data
+
+# Generate EDA figures
+PYTHONPATH=. python -m src.eda
+```
+
+Then open `notebooks/eda_and_training.ipynb` for interactive EDA (no RF training in this stage).

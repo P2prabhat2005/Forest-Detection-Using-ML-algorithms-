@@ -12,8 +12,6 @@
 
 Abid, Faroudja. (2019). *Algerian Forest Fires* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5KW4N
 
-Related paper (not the dataset file itself): Faroudja Abid, N. Izeboudjen. Predicting Forest Fire in Algeria Using Data Mining Techniques: Case Study of the Decision Tree Algorithm (AI2SD’2019 / related Springer publications).
-
 ## Integrity note
 
 - Downloaded from the official UCI zip endpoint above.
