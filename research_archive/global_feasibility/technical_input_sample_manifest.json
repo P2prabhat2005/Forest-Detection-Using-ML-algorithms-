@@ -1,0 +1,40 @@
+{
+  "audit_utc": "2026-10-11T07:18:19Z",
+  "purpose": "Small technical input spot check; not label or full forecast-contract validation",
+  "global_label_gate": "FAIL_PENDING_AGENCY_CLARIFICATION",
+  "source": {
+    "provider": "NOAA NCEP NOMADS",
+    "product": "GFS 0.25 degree GRIB2 pgrb2",
+    "filter_endpoint": "https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl",
+    "query_pattern": "file=gfs.t00z.pgrb2.0p25.f006&var_TMP=on&var_RH=on&var_UGRD=on&var_VGRD=on&var_APCP=on&lev_2_m_above_ground=on&lev_10_m_above_ground=on&lev_surface=on&subregion=&leftlon={left}&rightlon={right}&toplat={top}&bottomlat={bottom}&dir=%2Fgfs.{date}%2F00%2Fatmos",
+    "grib_centre": 7,
+    "grib_master_table_version": 2,
+    "grib_local_table_version": 1,
+    "issue_time_status": "Not agreed; 00 UTC is illustrative only",
+    "first_publication_timestamp": null,
+    "forecast_lead_hours": 6,
+    "instantaneous_valid_utc": "run date 06:00 UTC",
+    "apcp_period_utc": "run date 00:00-06:00 UTC; six-hour statistical accumulation",
+    "bytes_archived": false,
+    "content_sha256": null
+  },
+  "field_schema": [
+    {"name":"TMP_2m","grib_category_parameter":"0/0","level":"2 m above ground","units":"K","missing_in_four_samples":false},
+    {"name":"RH_2m","grib_category_parameter":"1/1","level":"2 m above ground","units":"%","missing_in_four_samples":false},
+    {"name":"UGRD_10m","grib_category_parameter":"2/2","level":"10 m above ground","units":"m s-1","missing_in_four_samples":false},
+    {"name":"VGRD_10m","grib_category_parameter":"2/3","level":"10 m above ground","units":"m s-1","missing_in_four_samples":false},
+    {"name":"APCP_surface","grib_category_parameter":"1/8","level":"surface","units":"kg m-2 (mm water equivalent)","period":"00-06 UTC","duplicate_messages_per_response":2,"missing_in_four_samples":false}
+  ],
+  "samples": [
+    {"run_date":"2026-10-09","region":"Greece","bbox_lonlat":[23,37,24,38],"http_status":200,"bytes":1416,"gridpoints":25,"tmp_2m_K_range":[292.109,295.109],"rh_2m_pct_range":[48.8,78.8],"u10_ms_range":[-0.294,3.006],"v10_ms_range":[-1.701,0.719],"apcp_mm_range":[0,0]},
+    {"run_date":"2026-10-09","region":"British Columbia","bbox_lonlat":[-123,49,-122,50],"http_status":200,"bytes":1435,"gridpoints":25,"tmp_2m_K_range":[279.209,286.109],"rh_2m_pct_range":[73.0,98.7],"u10_ms_range":[-3.894,2.116],"v10_ms_range":[-0.581,3.419],"apcp_mm_range":[0,0]},
+    {"run_date":"2026-10-10","region":"Greece","bbox_lonlat":[23,37,24,38],"http_status":200,"bytes":1390,"gridpoints":25,"tmp_2m_K_range":[293.351,295.951],"rh_2m_pct_range":[59.1,79.7],"u10_ms_range":[-1.433,1.267],"v10_ms_range":[-1.298,0.402],"apcp_mm_range":[0,0]},
+    {"run_date":"2026-10-10","region":"British Columbia","bbox_lonlat":[-123,49,-122,50],"http_status":200,"bytes":1446,"gridpoints":25,"tmp_2m_K_range":[272.651,284.651],"rh_2m_pct_range":[74.7,99.3],"u10_ms_range":[-1.633,0.367],"v10_ms_range":[-1.398,1.202],"apcp_mm_range":[0.0625,0.0625]}
+  ],
+  "static_sources_proposed_not_sampled": [
+    {"name":"Copernicus DEM GLO-30","summary_status":"not computed","version_tile_ids":null,"nodata_fraction":null},
+    {"name":"ESA WorldCover 2021 v200","summary_status":"not computed","version_tile_ids":null,"nodata_fraction":null}
+  ],
+  "equal_area_grid": {"cell_size_km_approx":25,"projection_and_origin":"not yet frozen","sample_cell_ids":null},
+  "overall_input_contract_status": "PARTIAL_NOT_CUTOFF_VERIFIED"
+}

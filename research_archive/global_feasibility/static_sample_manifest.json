@@ -1,0 +1,287 @@
+{
+  "created_utc": "2026-10-11T07:23:20.417277+00:00",
+  "purpose": "Small common-grid static-data feasibility sample; no labels or model",
+  "overall_global_feasibility_gate": "FAIL_PENDING_LABEL_CALENDAR_CLARIFICATION",
+  "grid": {
+    "crs": "EPSG:6933",
+    "origin_m": [
+      0,
+      0
+    ],
+    "step_m": 25000,
+    "cell_rule": "floor(projected_x/25000), floor(projected_y/25000)"
+  },
+  "processing": {
+    "spatial_selection": "Native WGS84 source pixel centres inside projected cell; no resampling; boundary approximation at native pixel size",
+    "weighting": "WGS84 ellipsoidal pixel area, computed by latitude row",
+    "elevation": "weighted mean/std; valid-pixel min/max",
+    "land_cover": "weighted class fractions over valid source area; NoData separate",
+    "software": {
+      "rasterio": "1.5.2",
+      "pyproj": "3.8.0",
+      "numpy": "2.3.5"
+    }
+  },
+  "sources": {
+    "elevation": {
+      "name": "Copernicus DEM GLO-30 Public",
+      "version": "COP-DEM_GLO-30-DGED AWS COG public instance",
+      "native_resolution": "1 arcsecond nominal (~30 m)",
+      "semantics": "digital surface model, not bare-earth terrain"
+    },
+    "land_cover": {
+      "name": "ESA WorldCover",
+      "version": "2021 v200",
+      "native_resolution": "10 m nominal (~0.0000833 degree)",
+      "class_codes": {
+        "10": "tree_cover",
+        "20": "shrubland",
+        "30": "grassland",
+        "40": "cropland",
+        "50": "built_up",
+        "60": "bare_sparse_vegetation",
+        "70": "snow_ice",
+        "80": "permanent_water",
+        "90": "herbaceous_wetland",
+        "95": "mangroves",
+        "100": "moss_lichen"
+      }
+    }
+  },
+  "samples": [
+    {
+      "region": "Greece",
+      "anchor_lonlat": [
+        22.5,
+        39.5
+      ],
+      "grid_cell": {
+        "id": "EPSG6933_25km_86_186",
+        "indices": [
+          86,
+          186
+        ],
+        "crs": "EPSG:6933",
+        "bounds_m": [
+          2150000,
+          4650000,
+          2175000,
+          4675000
+        ],
+        "geometry_wgs84": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                22.28296079410754,
+                39.4215088253358
+              ],
+              [
+                22.54206498938786,
+                39.4215088253358
+              ],
+              [
+                22.54206498938786,
+                39.67427181731589
+              ],
+              [
+                22.28296079410754,
+                39.67427181731589
+              ],
+              [
+                22.28296079410754,
+                39.4215088253358
+              ]
+            ]
+          ]
+        },
+        "area_km2": 625
+      },
+      "elevation": {
+        "url": "https://copernicus-dem-30m.s3.eu-central-1.amazonaws.com/Copernicus_DSM_COG_10_N39_00_E022_00_DEM/Copernicus_DSM_COG_10_N39_00_E022_00_DEM.tif",
+        "object_metadata": {
+          "content_length_bytes": 39752992,
+          "etag": "\"c19463609c506a448f02d40cfcd9c8f7\"",
+          "last_modified": "Mon, 09 May 2022 14:20:29 GMT",
+          "accept_ranges": "bytes"
+        },
+        "source_crs": "EPSG:4326",
+        "native_pixel_size_degrees": [
+          0.0002777777777777778,
+          0.0002777777777777778
+        ],
+        "source_nodata": null,
+        "window_shape": [
+          910,
+          933
+        ],
+        "candidate_pixel_centres": 849030,
+        "valid_pixel_centres": 849030,
+        "valid_area_fraction": 1.0,
+        "nodata_area_fraction": 0.0,
+        "sampled_pixel_area_m2": 625186798.4118195,
+        "elevation_m": {
+          "area_weighted_mean": 132.45386887848383,
+          "area_weighted_std": 60.66294185016205,
+          "min": 52.5,
+          "max": 482.84503173828125
+        }
+      },
+      "land_cover": {
+        "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N39E021_Map.tif",
+        "object_metadata": {
+          "content_length_bytes": 87399010,
+          "etag": "\"d67616c9aee6ea023e3acae482ad7a34-11\"",
+          "last_modified": "Wed, 26 Oct 2022 12:55:56 GMT",
+          "accept_ranges": "bytes"
+        },
+        "source_crs": "EPSG:4326",
+        "native_pixel_size_degrees": [
+          8.333333333333333e-05,
+          8.333333333333333e-05
+        ],
+        "source_nodata": 0.0,
+        "window_shape": [
+          3033,
+          3109
+        ],
+        "candidate_pixel_centres": 9423456,
+        "valid_pixel_centres": 9423456,
+        "valid_area_fraction": 1.0,
+        "nodata_area_fraction": 0.0,
+        "sampled_pixel_area_m2": 624510119.1373749,
+        "class_fractions_of_valid_area": {
+          "tree_cover": 0.04121546930439598,
+          "shrubland": 0.009969418827293663,
+          "grassland": 0.09222098761416551,
+          "cropland": 0.7902854142465497,
+          "built_up": 0.06332404925567636,
+          "bare_sparse_vegetation": 0.0008021917293551238,
+          "snow_ice": 0.0,
+          "permanent_water": 0.00218236307940867,
+          "herbaceous_wetland": 1.0594315668512945e-07,
+          "mangroves": 0.0,
+          "moss_lichen": 0.0
+        },
+        "unmapped_valid_class_fraction": 0.0
+      }
+    },
+    {
+      "region": "British Columbia",
+      "anchor_lonlat": [
+        -120.5,
+        50.5
+      ],
+      "grid_cell": {
+        "id": "EPSG6933_25km_-466_226",
+        "indices": [
+          -466,
+          226
+        ],
+        "crs": "EPSG:6933",
+        "bounds_m": [
+          -11650000,
+          5650000,
+          -11625000,
+          5675000
+        ],
+        "geometry_wgs84": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -120.74255500062924,
+                50.43692994819868
+              ],
+              [
+                -120.48345080534892,
+                50.43692994819868
+              ],
+              [
+                -120.48345080534892,
+                50.743141440393174
+              ],
+              [
+                -120.74255500062924,
+                50.743141440393174
+              ],
+              [
+                -120.74255500062924,
+                50.43692994819868
+              ]
+            ]
+          ]
+        },
+        "area_km2": 625
+      },
+      "elevation": {
+        "url": "https://copernicus-dem-30m.s3.eu-central-1.amazonaws.com/Copernicus_DSM_COG_10_N50_00_W121_00_DEM/Copernicus_DSM_COG_10_N50_00_W121_00_DEM.tif",
+        "object_metadata": {
+          "content_length_bytes": 27770557,
+          "etag": "\"13c84b397680bb2c88cf12abf470fd01\"",
+          "last_modified": "Mon, 09 May 2022 14:29:48 GMT",
+          "accept_ranges": "bytes"
+        },
+        "source_crs": "EPSG:4326",
+        "native_pixel_size_degrees": [
+          0.00041666666666666664,
+          0.0002777777777777778
+        ],
+        "source_nodata": null,
+        "window_shape": [
+          1102,
+          622
+        ],
+        "candidate_pixel_centres": 685444,
+        "valid_pixel_centres": 685444,
+        "valid_area_fraction": 1.0,
+        "nodata_area_fraction": 0.0,
+        "sampled_pixel_area_m2": 624943560.2929077,
+        "elevation_m": {
+          "area_weighted_mean": 1173.4982067697838,
+          "area_weighted_std": 398.04678965466786,
+          "min": 336.0,
+          "max": 1893.635009765625
+        }
+      },
+      "land_cover": {
+        "url": "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_N48W123_Map.tif",
+        "object_metadata": {
+          "content_length_bytes": 74010155,
+          "etag": "\"4fc9ca1c99e9cec782e966b8cc401373-9\"",
+          "last_modified": "Wed, 26 Oct 2022 12:56:04 GMT",
+          "accept_ranges": "bytes"
+        },
+        "source_crs": "EPSG:4326",
+        "native_pixel_size_degrees": [
+          8.333333333333333e-05,
+          8.333333333333333e-05
+        ],
+        "source_nodata": 0.0,
+        "window_shape": [
+          3675,
+          3109
+        ],
+        "candidate_pixel_centres": 11425575,
+        "valid_pixel_centres": 11425575,
+        "valid_area_fraction": 1.0,
+        "nodata_area_fraction": 0.0,
+        "sampled_pixel_area_m2": 625027348.9438171,
+        "class_fractions_of_valid_area": {
+          "tree_cover": 0.5815902535729526,
+          "shrubland": 6.133953395152377e-07,
+          "grassland": 0.3456502304988473,
+          "cropland": 0.006897390648043943,
+          "built_up": 0.004819854730437902,
+          "bare_sparse_vegetation": 0.009696822108520534,
+          "snow_ice": 0.0,
+          "permanent_water": 0.05116520807773005,
+          "herbaceous_wetland": 6.081022833160417e-05,
+          "mangroves": 0.0,
+          "moss_lichen": 0.00011881673979731821
+        },
+        "unmapped_valid_class_fraction": 0.0
+      }
+    }
+  ]
+}

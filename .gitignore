@@ -1,0 +1,59 @@
+# Local runtimes, caches, editor state and diagnostics
+.venv/
+venv/
+.cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.streamlit/
+.vscode/
+.cursor/
+_diag*
+*.log
+*.tmp
+*.temp
+*.bak
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*secret*.json
+
+# Downloaded and generated datasets; keep sample images separately
+data/raw/
+data/processed/
+data/external/
+data/images/train/
+data/images/val/
+data/tabular/*.csv
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.npz
+*.zip
+
+# Research and generated output are local by default. Select lightweight
+# documentation/scripts and required small inference artifacts explicitly.
+results/
+research_archive/
+
+# Legacy and production model artifacts are included only by explicit staging.
+models/*.pt
+models/*.pth
+models/*.joblib
+
+# Local helper scripts and scratch work
+_exp6_workspace_bounce/
+fix_python_env.ps1
+launch_fix_python_env.vbs
+run_exp6.bat
+run_fix_python_env.bat
+python.cmd

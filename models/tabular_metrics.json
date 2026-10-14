@@ -1,0 +1,59 @@
+{
+  "accuracy": 0.9795918367346939,
+  "f1": 0.9824561403508771,
+  "n_train": 195,
+  "n_test": 49,
+  "confusion_matrix": [
+    [
+      20,
+      1
+    ],
+    [
+      0,
+      28
+    ]
+  ],
+  "labels": [
+    "not fire",
+    "fire"
+  ],
+  "classification_report": {
+    "not fire": {
+      "precision": 1.0,
+      "recall": 0.9523809523809523,
+      "f1-score": 0.975609756097561,
+      "support": 21.0
+    },
+    "fire": {
+      "precision": 0.9655172413793104,
+      "recall": 1.0,
+      "f1-score": 0.9824561403508771,
+      "support": 28.0
+    },
+    "accuracy": 0.9795918367346939,
+    "macro avg": {
+      "precision": 0.9827586206896552,
+      "recall": 0.9761904761904762,
+      "f1-score": 0.979032948224219,
+      "support": 49.0
+    },
+    "weighted avg": {
+      "precision": 0.9802955665024631,
+      "recall": 0.9795918367346939,
+      "f1-score": 0.9795219756708845,
+      "support": 49.0
+    }
+  },
+  "features": [
+    "Temperature",
+    "RH",
+    "Ws",
+    "Rain",
+    "FFMC",
+    "DMC",
+    "DC",
+    "ISI",
+    "BUI",
+    "FWI"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "val_accuracy": 1.0,
+  "n_train": 160,
+  "n_val": 40,
+  "class_names": [
+    "no_fire",
+    "fire"
+  ],
+  "history": [
+    {
+      "phase": "frozen",
+      "epoch": 1,
+      "train_loss": 0.4552947789430618,
+      "train_acc": 0.7625,
+      "val_loss": 0.47120293974876404,
+      "val_acc": 0.675
+    },
+    {
+      "phase": "frozen",
+      "epoch": 2,
+      "train_loss": 0.2213004782795906,
+      "train_acc": 0.925,
+      "val_loss": 0.17739448174834252,
+      "val_acc": 1.0
+    },
+    {
+      "phase": "frozen",
+      "epoch": 3,
+      "train_loss": 0.08482358008623123,
+      "train_acc": 0.99375,
+      "val_loss": 0.03615295216441154,
+      "val_acc": 1.0
+    },
+    {
+      "phase": "finetune",
+      "epoch": 1,
+      "train_loss": 0.029298081493470816,
+      "train_acc": 0.99375,
+      "val_loss": 0.00042584645561873915,
+      "val_acc": 1.0
+    },
+    {
+      "phase": "finetune",
+      "epoch": 2,
+      "train_loss": 0.002499856089707464,
+      "train_acc": 1.0,
+      "val_loss": 7.562367245554924e-05,
+      "val_acc": 1.0
+    }
+  ]
+}

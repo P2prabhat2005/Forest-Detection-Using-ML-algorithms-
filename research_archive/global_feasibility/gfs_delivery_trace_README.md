@@ -1,0 +1,11 @@
+# Prospective 06Z delivery trace
+
+As of **2026-10-11 13:53 UTC**, today's 11:00 UTC cutoff has passed. The next eligible run is **2026-10-12 06Z**; its following-day target is **2026-10-13 00:00–2026-10-14 00:00 UTC**. This runner has not claimed any historical retrieval as prospective evidence.
+
+Double-click `run_gfs_delivery_trace.bat` before the next cutoff and leave its terminal open. It chooses the next eligible UTC issue date automatically, waits until 05:55 UTC if started early, polls at two-minute intervals, and stops when all required fields are observed or at 11:00 UTC. If launched after 11:00 UTC, it waits for the following day's 06Z cycle. No browser or background service is required.
+
+The contract is calculated from the requested interval: issue 12Z, cutoff 11Z, same-day 06Z candidate run, instantaneous target samples 00:00–23:00 and precipitation intervals ending 01:00–24:00. Required lead numbers are derived in `contract()` from these timestamps. For each lead, the runner retrieves the small NOAA S3 index once available and tiny NOMADS GRIB cutouts for Greece and BC. It never downloads a full forecast grid. The trace accepts a field only after checking the run ID, forecast timing, level, unit mapping, finite values and precipitation accumulation metadata. It reconstructs 24 nonoverlapping precipitation hours by differencing within the six-hour accumulation blocks.
+
+Each run creates a timestamped folder under `gfs_delivery_traces/` containing `requests.jsonl` (every attempt with UTC start/end, HTTP status, selected response headers, bytes/hash or error), retained small `.idx`/`.grib2` responses, `report.json` and `report.md`. `first_success_utc` means the first successful retrieval **observed by this client**. Its precision is limited by polling; it is not NOAA's first public publication time. The report keeps the overall Greece–BC feasibility gate at **FAIL** pending label compatibility.
+
+For an offline readiness check, run `run_gfs_delivery_trace.bat --self-test`; it creates a timestamped `gfs_trace_preflight_*.json` without network requests or waiting. Requires Python 3.12 standard library only. The Windows launcher uses the same bundled runtime as the app launcher; update `TRACE_PYTHON` if that runtime moves.

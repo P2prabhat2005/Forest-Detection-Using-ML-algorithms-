@@ -1,0 +1,185 @@
+{
+  "overall_gate": "FAIL_LABEL_COMPATIBILITY_UNRESOLVED",
+  "archive_dates": [
+    {
+      "initialization_utc": "2025-01-15T06:00:00+00:00",
+      "target_start_utc": "2025-01-16T00:00:00+00:00",
+      "target_end_exclusive_utc": "2025-01-17T00:00:00+00:00",
+      "inventories": 25,
+      "inventory_errors_or_missing_fields": 0,
+      "valid_timestamps_align": true,
+      "required_accumulations_present": true,
+      "grib_archive_timestamp_count": 25,
+      "latest_grib_archive_last_modified": "2025-01-15T09:45:14+00:00",
+      "all_archive_object_times_before_cutoff": true,
+      "actual_pre_cutoff_public_retrieval_proven": false
+    },
+    {
+      "initialization_utc": "2025-07-15T06:00:00+00:00",
+      "target_start_utc": "2025-07-16T00:00:00+00:00",
+      "target_end_exclusive_utc": "2025-07-17T00:00:00+00:00",
+      "inventories": 25,
+      "inventory_errors_or_missing_fields": 0,
+      "valid_timestamps_align": true,
+      "required_accumulations_present": true,
+      "grib_archive_timestamp_count": 25,
+      "latest_grib_archive_last_modified": "2025-07-15T09:58:35+00:00",
+      "all_archive_object_times_before_cutoff": true,
+      "actual_pre_cutoff_public_retrieval_proven": false
+    },
+    {
+      "initialization_utc": "2026-04-15T06:00:00+00:00",
+      "target_start_utc": "2026-04-16T00:00:00+00:00",
+      "target_end_exclusive_utc": "2026-04-17T00:00:00+00:00",
+      "inventories": 25,
+      "inventory_errors_or_missing_fields": 0,
+      "valid_timestamps_align": true,
+      "required_accumulations_present": true,
+      "grib_archive_timestamp_count": 25,
+      "latest_grib_archive_last_modified": "2026-04-15T09:55:24+00:00",
+      "all_archive_object_times_before_cutoff": true,
+      "actual_pre_cutoff_public_retrieval_proven": false
+    },
+    {
+      "initialization_utc": "2026-10-09T06:00:00+00:00",
+      "target_start_utc": "2026-10-10T00:00:00+00:00",
+      "target_end_exclusive_utc": "2026-10-11T00:00:00+00:00",
+      "inventories": 25,
+      "inventory_errors_or_missing_fields": 0,
+      "valid_timestamps_align": true,
+      "required_accumulations_present": true,
+      "grib_archive_timestamp_count": 25,
+      "latest_grib_archive_last_modified": "2026-10-09T09:55:11+00:00",
+      "all_archive_object_times_before_cutoff": true,
+      "actual_pre_cutoff_public_retrieval_proven": false
+    }
+  ],
+  "regional_values": [
+    {
+      "region": "Greece",
+      "run_id": "gfs.20261009/06",
+      "retrieval_errors": [],
+      "forecast_files": 25,
+      "ranges": {
+        "temperature_K": [
+          290.502587890625,
+          301.268798828125
+        ],
+        "humidity_percent": [
+          39.7,
+          88.80000000000001
+        ],
+        "u_wind_ms": [
+          -3.7854516601562502,
+          1.3664013671875
+        ],
+        "v_wind_ms": [
+          -1.12933349609375,
+          3.060458984375
+        ]
+      },
+      "missing_field_slots": [],
+      "precipitation": {
+        "hourly_intervals": 24,
+        "point_count": 9,
+        "daily_mm_range": [
+          2.1875,
+          10.4375
+        ],
+        "minimum_hourly_increment_mm": 0.0,
+        "max_difference_vs_cumulative_endpoint_mm": 0.0625,
+        "method": "within-block hourly differencing; reset at six-hour boundary; no clipping of negative increments"
+      }
+    },
+    {
+      "region": "British Columbia",
+      "run_id": "gfs.20261009/06",
+      "retrieval_errors": [],
+      "forecast_files": 25,
+      "ranges": {
+        "temperature_K": [
+          271.943115234375,
+          282.4755126953125
+        ],
+        "humidity_percent": [
+          50.900000000000006,
+          99.10000000000001
+        ],
+        "u_wind_ms": [
+          -0.4235986328125,
+          3.5590527343750002
+        ],
+        "v_wind_ms": [
+          -6.35447998046875,
+          0.89057861328125
+        ]
+      },
+      "missing_field_slots": [],
+      "precipitation": {
+        "hourly_intervals": 24,
+        "point_count": 9,
+        "daily_mm_range": [
+          0.5625,
+          2.1875
+        ],
+        "minimum_hourly_increment_mm": 0.0,
+        "max_difference_vs_cumulative_endpoint_mm": 0.125,
+        "method": "within-block hourly differencing; reset at six-hour boundary; no clipping of negative increments"
+      }
+    }
+  ],
+  "new_static_cells": [
+    {
+      "region": "Greece",
+      "stratum": "mountain",
+      "grid_id": "EPSG6933_25km_82_187",
+      "elevation_coverage": 1.0,
+      "landcover_coverage": 1.0,
+      "elevation_mean_m": 958.4487819404442,
+      "water_fraction": 0.00010008761767938331,
+      "tree_fraction": 0.8486326298930829,
+      "errors": []
+    },
+    {
+      "region": "Greece",
+      "stratum": "coastal",
+      "grid_id": "EPSG6933_25km_91_181",
+      "elevation_coverage": 1.0,
+      "landcover_coverage": 1.0,
+      "elevation_mean_m": 238.10872405312887,
+      "water_fraction": 0.21372394945706621,
+      "tree_fraction": 0.4292943758117029,
+      "errors": []
+    },
+    {
+      "region": "British Columbia",
+      "stratum": "mountain",
+      "grid_id": "EPSG6933_25km_-473_226",
+      "elevation_coverage": 1.0,
+      "landcover_coverage": 1.0,
+      "elevation_mean_m": 1451.1188122717551,
+      "water_fraction": 0.04977926345289393,
+      "tree_fraction": 0.671889010868664,
+      "errors": []
+    },
+    {
+      "region": "British Columbia",
+      "stratum": "coastal",
+      "grid_id": "EPSG6933_25km_-478_222",
+      "elevation_coverage": 1.0,
+      "landcover_coverage": 1.0,
+      "elevation_mean_m": 98.88804570642152,
+      "water_fraction": 0.7326968611672533,
+      "tree_fraction": 0.24006027730704949,
+      "errors": []
+    }
+  ],
+  "weather_transfer_bytes": 4195428,
+  "independent_gdal_decode_check": {
+    "bands_checked": 350,
+    "max_numeric_difference": 2.0751953115905053e-05,
+    "timestamp_errors": [],
+    "within_0_0001_native_units": true,
+    "gdal_version": "3.12.2"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "spatial_units": {
+    "scheme": "same as Experiment 4 ~10 km rectangular blocks",
+    "stride_cells": {
+      "y": 11,
+      "x": 14
+    },
+    "mean_extent_km": {
+      "y": 9.973336738594924,
+      "x": 10.00248658099137
+    },
+    "n_units": 4022,
+    "mean_area_km2": 79.72948277108229,
+    "cell_km2": 0.6477803045162595
+  },
+  "label": "unit positive on day t if any fire-start burned_areas cell inside unit on day t",
+  "temporal": "dynamic predictors only from t-10 ... t-1 (HISTORY buffer includes earlier days for continuity)",
+  "dynamic_spatial_agg": {
+    "max_t2m": "max",
+    "max_d2m": "max",
+    "min_rh": "min",
+    "max_tp": "mean",
+    "max_sp": "mean",
+    "max_wind_speed": "max",
+    "ndvi": "mean",
+    "lst_day": "max",
+    "lst_night": "max",
+    "sminx": "mean"
+  },
+  "static_spatial_agg": {
+    "DEM": "mean",
+    "SLOPE": "mean",
+    "ROAD_DISTANCE": "min",
+    "WATERWAY_DISTANCE": "min",
+    "POP_DENS": "mean"
+  },
+  "clc_spatial_agg": "mean of CLC_2018_{0..9} fractions over land cells in unit",
+  "fwi_baseline_spatial_agg": "max of previous-day (t-1) FWI over land cells in unit, then min-max to [0,1] on train",
+  "xgb_feature_construction": "For each unit-day: dyn10 shape (10 days \u00d7 10 vars) after spatial agg; features = [mean_over_10_days, last_day (t-1), static(DEM,SLOPE,road_min,water_min,pop_mean), clc10]",
+  "train_years": "2009-2018 May-Sep: ALL positive unit-days + 20:1 random negatives",
+  "val_year": "2019 May-Sep FULL unit-day grid",
+  "test_years": "2020 and 2021 May-Sep FULL unit-day grid",
+  "note": "Artifact rerun \u2014 identical to Exp5 methodology; writes only to artifact_rerun folder",
+  "artifact_rerun": true
+}
