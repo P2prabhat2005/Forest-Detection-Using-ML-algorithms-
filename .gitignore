@@ -16,6 +16,7 @@ _diag*
 *.tmp
 *.temp
 *.bak
+docs/*.pdf
 
 # Credentials and local configuration
 .env
