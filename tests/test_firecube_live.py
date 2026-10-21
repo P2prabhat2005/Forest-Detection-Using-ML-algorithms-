@@ -5,7 +5,7 @@ from datetime import date
 import numpy as np
 import pytest
 
-from src.firecube_inference import FireCubeExp5Inference
+from src.firecube_inference import DEFAULT_CUBE, DEFAULT_MODEL, FireCubeExp5Inference
 from src.firecube_live import (
     DailyValues,
     HistoricalCubeDynamicProvider,
@@ -73,6 +73,10 @@ def test_combined_modis_provider_reports_missing_variable_without_silent_substit
 
 
 @pytest.mark.integration
+@pytest.mark.skipif(
+    not DEFAULT_CUBE.exists() or not DEFAULT_MODEL.exists(),
+    reason="local FireCube cube or Exp5 artifact is unavailable",
+)
 def test_historical_provider_reproduces_exp5_feature_vector():
     base = FireCubeExp5Inference()
     target = date(2020, 7, 15)
