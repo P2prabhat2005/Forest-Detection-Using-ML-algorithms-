@@ -155,6 +155,10 @@ class ProductionFeatureRequest:
     location_metadata: dict[str, Any]
     schema: str = "track_b_production_v1"
 
+    @property
+    def raw_feature_values(self) -> dict[str, float]:
+        return dict(zip(self.feature_names, self.raw_features.tolist()))
+
     def as_dict(self) -> dict[str, Any]:
         return {
             "latitude": self.latitude,
@@ -162,7 +166,7 @@ class ProductionFeatureRequest:
             "target_date": self.target_date,
             "schema": self.schema,
             "feature_names": self.feature_names,
-            "raw_feature_values": dict(zip(self.feature_names, self.raw_features.tolist())),
+            "raw_feature_values": self.raw_feature_values,
             "feature_values": self.feature_values,
             "missing_features": self.missing_features,
             "feature_provenance": self.feature_provenance,
