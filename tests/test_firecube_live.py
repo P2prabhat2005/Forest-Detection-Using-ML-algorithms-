@@ -5,7 +5,7 @@ from datetime import date
 import numpy as np
 import pytest
 
-from src.firecube_inference import FireCubeExp5Inference
+from src.firecube_inference import DEFAULT_CUBE, FireCubeExp5Inference
 from src.firecube_live import (
     DailyValues,
     HistoricalCubeDynamicProvider,
@@ -74,6 +74,8 @@ def test_combined_modis_provider_reports_missing_variable_without_silent_substit
 
 @pytest.mark.integration
 def test_historical_provider_reproduces_exp5_feature_vector():
+    if not DEFAULT_CUBE.exists():
+        pytest.skip("local FireCube dataset is unavailable")
     base = FireCubeExp5Inference()
     target = date(2020, 7, 15)
     expected = base.predict_historical(38.0, 23.7, target)
