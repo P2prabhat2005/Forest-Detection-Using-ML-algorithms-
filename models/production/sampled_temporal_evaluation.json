@@ -1,0 +1,36 @@
+{
+  "model": "models/production/xgb_baseline.joblib",
+  "samples": "research_archive\\research_data\\processed\\firecube_samples.npz",
+  "training_years": "<=2018",
+  "limitations": "Artificial sampled prevalence; historical FireCube inputs; not live/provider or geographic validation. No retraining, calibration or threshold selection.",
+  "operational_validity": false,
+  "years": {
+    "2019": {
+      "role": "validation",
+      "n_samples": 5469,
+      "positive_rate": 0.3333333333333333,
+      "roc_auc": 0.9202212600678417,
+      "average_precision": 0.8553183110047968,
+      "brier_score": 0.12039712816476822,
+      "imputed_feature_count": 5308
+    },
+    "2020": {
+      "role": "temporal test",
+      "n_samples": 4791,
+      "positive_rate": 0.3333333333333333,
+      "roc_auc": 0.9348243752276595,
+      "average_precision": 0.9015616936225942,
+      "brier_score": 0.10189253836870193,
+      "imputed_feature_count": 3514
+    },
+    "2021": {
+      "role": "temporal test",
+      "n_samples": 15492,
+      "positive_rate": 0.3333333333333333,
+      "roc_auc": 0.9748428351016182,
+      "average_precision": 0.9384875707229353,
+      "brier_score": 0.06567157059907913,
+      "imputed_feature_count": 13584
+    }
+  }
+}

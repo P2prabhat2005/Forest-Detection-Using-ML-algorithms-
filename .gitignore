@@ -26,6 +26,13 @@ docs/*.pdf
 *.key
 *credentials*.json
 *secret*.json
+.aws/
+.ssh/
+.git-credentials
+.netrc
+.pypirc
+*.p12
+*.pfx
 
 # Downloaded and generated datasets; keep sample images separately
 data/raw/
@@ -39,6 +46,8 @@ data/tabular/*.csv
 *.grib
 *.grib2
 *.npz
+# Small, versioned production geography; the source NetCDF stays excluded.
+!models/production/greece_static_v1.npz
 *.zip
 
 # Research and generated output are local by default. Select lightweight

@@ -87,13 +87,16 @@ def load_production_service(historical: bool) -> ProductionPredictionService | N
     preprocessor = load_production_preprocessor()
     if model is None or preprocessor is None:
         return None
-    if historical:
-        pipeline = ProductionFeaturePipeline(
-            dynamic_provider=HistoricalCubeDynamicProvider(),
-            preprocessor=preprocessor,
-        )
-    else:
-        pipeline = ProductionFeaturePipeline(preprocessor=preprocessor)
+    try:
+        if historical:
+            pipeline = ProductionFeaturePipeline(
+                dynamic_provider=HistoricalCubeDynamicProvider(),
+                preprocessor=preprocessor,
+            )
+        else:
+            pipeline = ProductionFeaturePipeline(preprocessor=preprocessor)
+    except (FileNotFoundError, OSError, FireCubeInferenceError):
+        return None
     return ProductionPredictionService(pipeline, model)
 
 
@@ -512,7 +515,8 @@ def production_section(historical: bool = False) -> None:
         st.caption("Land-cell eligibility is checked by the existing inference pipeline when you run the prediction.")
     service = load_production_service(historical)
     if service is None:
-        st.error("The saved production model or preprocessor is unavailable. The dashboard cannot run predictions here.")
+        required = "local FireCube dataset" if historical else "models/production/greece_static_v1.npz and its matching .json manifest"
+        st.error(f"Prediction assets are unavailable or incompatible. Check the saved models, preprocessor and {required}. Run python -m src.check_setup{' --historical' if historical else ''} for details.")
         return
     label = "Run historical prediction" if historical else "Get experimental score"
     if st.button(label, type="primary", key="production_predict_historical" if historical else "production_predict_live", disabled=not supported_box):

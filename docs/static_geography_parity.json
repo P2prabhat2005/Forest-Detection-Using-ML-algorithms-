@@ -1,0 +1,590 @@
+{
+  "checked_utc": "2026-10-24T18:35:32.384867+00:00",
+  "artifact_sha256": "66b45961241a602f5427d4b3e490feb897b3b6ada5942ad67c181e2fcc0dc574",
+  "source_cube_sha256_at_export": "500aec8ed808e6b1a8615cbc7300881d5c4a981a79a5f6853ee36d5985e7f9e6",
+  "model_sha256": "07fb0ff270bec1dea61a3407f268f42340e357d5685fb850ae1f87af71735842",
+  "preprocessor_sha256": "5ef2fb08954780b67e803601afcf643dc23d657c21546aa12b8ceffd5c73be64",
+  "dynamic_inputs": "Identical deterministic ten-day fixtures; isolates static-source parity, not live API validation.",
+  "operational_validity": false,
+  "land_checks": [
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2008,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2009,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2015,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2020,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2021,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 38.0,
+      "longitude": 23.7,
+      "year": 2026,
+      "unit_id": 3155,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.18057695031166077
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2008,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2009,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2015,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2020,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2021,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 42.2910501885865,
+      "longitude": 18.77541843993373,
+      "year": 2026,
+      "unit_id": 0,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.32661688327789307
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2008,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.41584986448287964
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2009,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.41584986448287964
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2015,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.39836886525154114
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2020,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.39836886525154114
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2021,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.39836886525154114
+    },
+    {
+      "latitude": 41.631330236420865,
+      "longitude": 22.521976192973142,
+      "year": 2026,
+      "unit_id": 574,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.39836886525154114
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2008,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2009,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2015,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2020,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2021,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 41.00418904732514,
+      "longitude": 22.97807887595185,
+      "year": 2026,
+      "unit_id": 1148,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.4308761954307556
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2008,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2009,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2015,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2020,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2021,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 40.19786466134492,
+      "longitude": 21.381719485526364,
+      "year": 2026,
+      "unit_id": 1723,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3493787944316864
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2008,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2009,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2015,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2020,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2021,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 39.334527439992364,
+      "longitude": 20.29033092268445,
+      "year": 2026,
+      "unit_id": 2297,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3730677366256714
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2008,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2009,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2015,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2020,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2021,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 38.406032692499984,
+      "longitude": 22.750027534462497,
+      "year": 2026,
+      "unit_id": 2872,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.3578772246837616
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2008,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2009,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2015,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2020,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2021,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 37.42052510963527,
+      "longitude": 23.189840835906253,
+      "year": 2026,
+      "unit_id": 3446,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.34467020630836487
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2008,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2009,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2015,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2020,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2021,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    },
+    {
+      "latitude": 34.838658136345074,
+      "longitude": 24.06946743879377,
+      "year": 2026,
+      "unit_id": 4021,
+      "static_max_absolute_difference": 0.0,
+      "normalized_max_absolute_difference": 0.0,
+      "score_absolute_difference": 0.0,
+      "score": 0.29962024092674255
+    }
+  ],
+  "water_checks": [
+    {
+      "latitude": 42.299194879353976,
+      "longitude": 18.70211622302644,
+      "both_rejected": true
+    },
+    {
+      "latitude": 39.236791150782636,
+      "longitude": 23.092104546696532,
+      "both_rejected": true
+    },
+    {
+      "latitude": 37.493827326542565,
+      "longitude": 23.702956354257303,
+      "both_rejected": true
+    },
+    {
+      "latitude": 36.312847165258404,
+      "longitude": 26.13821889373292,
+      "both_rejected": true
+    },
+    {
+      "latitude": 35.31105020085874,
+      "longitude": 21.463166393201135,
+      "both_rejected": true
+    },
+    {
+      "latitude": 34.30110854569159,
+      "longitude": 28.899269063907617,
+      "both_rejected": true
+    }
+  ],
+  "exhaustive_static_arrays": {
+    "units": 4022,
+    "population_years": 13,
+    "grid_cells": 1231699,
+    "exact_equal_including_nan": true
+  },
+  "passed": true
+}

@@ -1,0 +1,353 @@
+{
+  "schema": "greece_track_b_static_v1",
+  "created_utc": "2026-10-24T18:35:05.318584+00:00",
+  "artifact_filename": "greece_static_v1.npz",
+  "artifact_bytes": 320498,
+  "artifact_sha256": "66b45961241a602f5427d4b3e490feb897b3b6ada5942ad67c181e2fcc0dc574",
+  "source": {
+    "filename": "dataset_greece.nc",
+    "bytes": 23501672194,
+    "sha256": "500aec8ed808e6b1a8615cbc7300881d5c4a981a79a5f6853ee36d5985e7f9e6",
+    "netcdf_attributes": {
+      "temporal_extent": "(2009-03-06, 2021-08-29)",
+      "spatial_extent": "(18.7, 28.9, 34.3, 42.3)",
+      "crs": "EPSG:4326",
+      "license": "Creative Commons Attribution v4",
+      "creators": "Ioannis Prapas, Spyros Kondylatos, Ioannis Papoutsis",
+      "contact_person": "Ioannis Prapas <iprapas (at) noa.gr>",
+      "citation": "Ioannis Prapas, Spyros Kondylatos, & Ioannis Papoutsis. (2021). A Datacube for the analysis of wildfires in Greece (0.1) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.4943354",
+      "acknowledgements": "This work has received funding from the European Union’s Horizon 2020 research and innovation project DeepCube, under grant agreement number 101004188.",
+      "title": "FireCube: A Daily Datacube for the Modeling and Analysis of Wildfires in Greece"
+    },
+    "local_documentation_source_doi": "10.5281/zenodo.6475592",
+    "citation_note": "Embedded citation references older record 4943354; preserved verbatim. Source hash identifies the actual local cube; no claim of publisher checksum verification."
+  },
+  "generator": "python -m scripts.export_static_geography",
+  "generator_sha256": "b4d39100fe1be9bcd4a6416280a91f182d65f88746392166f3cf7e5f3e37704b",
+  "aggregation_source_sha256": "77c7d05651b1ad60a69ba61404f3d67c472081d654af98f1f9b62c764321b485",
+  "numpy_version": "2.5.3",
+  "netcdf4_version": "1.7.4",
+  "crs": "EPSG:4326",
+  "grid_shape": [
+    983,
+    1253
+  ],
+  "n_units": 4022,
+  "land_cell_count": 495032,
+  "non_land_cell_count": 736667,
+  "coordinate_bounds": {
+    "longitude": [
+      18.70211622302644,
+      28.899269063907617
+    ],
+    "latitude": [
+      34.30110854569159,
+      42.299194879353976
+    ]
+  },
+  "stride_cells": {
+    "y": 11,
+    "x": 14
+  },
+  "mapping": "Inclusive axis-centre bounds; nearest axis argmin (first index wins ties); land iff filled CLC_2018_9 < 0.5; non-land/unknown excluded. Sorted unique block keys and IDs exactly follow build_block_units.",
+  "static_feature_names": [
+    "DEM__mean",
+    "SLOPE__mean",
+    "ROAD_DISTANCE__min",
+    "WATERWAY_DISTANCE__min",
+    "POP_DENS__mean"
+  ],
+  "clc_feature_names": [
+    "CLC_2018_0__mean",
+    "CLC_2018_1__mean",
+    "CLC_2018_2__mean",
+    "CLC_2018_3__mean",
+    "CLC_2018_4__mean",
+    "CLC_2018_5__mean",
+    "CLC_2018_6__mean",
+    "CLC_2018_7__mean",
+    "CLC_2018_8__mean",
+    "CLC_2018_9__mean"
+  ],
+  "population_years": [
+    2009,
+    2010,
+    2011,
+    2012,
+    2013,
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021
+  ],
+  "population_year_policy": "clamp requested year to [2009,2021] (unchanged)",
+  "aggregation": {
+    "DEM": "mean",
+    "SLOPE": "mean",
+    "ROAD_DISTANCE": "min",
+    "WATERWAY_DISTANCE": "min",
+    "POP_DENS": "mean",
+    "CLC_2018_0..9": "mean"
+  },
+  "missing_values": "Source masked values become float32 NaN; aggregation ignores nonfinite values, all-missing units stay NaN. Stored unchanged; existing trained median imputer handles NaNs. grid_unit_id=-1 denotes excluded cells, never a feature value.",
+  "variable_attributes": {
+    "DEM": {
+      "_FillValue": "nan",
+      "coordinates": "band",
+      "grid_mapping": "spatial_ref",
+      "units": "m",
+      "long_name": "Elevation",
+      "title": "Averaged Digital Elevation Model EU-DEM"
+    },
+    "SLOPE": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "degrees",
+      "long_name": "Slope",
+      "title": "Slope calculated from Digital Elevation Model EU-DEM"
+    },
+    "ROAD_DISTANCE": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "meters",
+      "long_name": "Distance from roads",
+      "title": "Distance from major roads from Worldpop"
+    },
+    "WATERWAY_DISTANCE": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "meters",
+      "long_name": "Distance from waterways",
+      "title": "Distance from major waterways from Worldpop"
+    },
+    "POP_DENS_2009": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2009)",
+      "title": "Population density for year 2009 from Worldpop"
+    },
+    "POP_DENS_2010": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2010)",
+      "title": "Population density for year 2010 from Worldpop"
+    },
+    "POP_DENS_2011": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2011)",
+      "title": "Population density for year 2011 from Worldpop"
+    },
+    "POP_DENS_2012": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2012)",
+      "title": "Population density for year 2012 from Worldpop"
+    },
+    "POP_DENS_2013": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2013)",
+      "title": "Population density for year 2013 from Worldpop"
+    },
+    "POP_DENS_2014": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2014)",
+      "title": "Population density for year 2014 from Worldpop"
+    },
+    "POP_DENS_2015": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2015)",
+      "title": "Population density for year 2015 from Worldpop"
+    },
+    "POP_DENS_2016": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2016)",
+      "title": "Population density for year 2016 from Worldpop"
+    },
+    "POP_DENS_2017": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2017)",
+      "title": "Population density for year 2017 from Worldpop"
+    },
+    "POP_DENS_2018": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2018)",
+      "title": "Population density for year 2018 from Worldpop"
+    },
+    "POP_DENS_2019": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2019)",
+      "title": "Population density for year 2019 from Worldpop"
+    },
+    "POP_DENS_2020": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2020)",
+      "title": "Population density for year 2020 from Worldpop"
+    },
+    "POP_DENS_2021": {
+      "_FillValue": "nan",
+      "coordinates": "spatial_ref band",
+      "units": "humans/km^2",
+      "long_name": "Population density (2021)",
+      "title": "Population density for year 2021 from Worldpop"
+    },
+    "CLC_2018_0": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 0 (artificial_surfaces)",
+      "title": "Fraction of class 0 (artificial_surfaces), Corine Class Codes [1, 3, 4, 5, 6, 7, 8, 9 , 10, 11], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_1": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 1 (discontinuous_urban)",
+      "title": "Fraction of class 1 (discontinuous_urban), Corine Class Codes [2], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_2": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 2 (arable_land)",
+      "title": "Fraction of class 2 (arable_land), Corine Class Codes [12, 13, 14], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_3": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 3 (permanent_crops)",
+      "title": "Fraction of class 3 (permanent_crops), Corine Class Codes [15, 16, 17], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_4": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 4 (pastures)",
+      "title": "Fraction of class 4 (pastures), Corine Class Codes [18], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_5": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 5 (general_agricultural)",
+      "title": "Fraction of class 5 (general_agricultural), Corine Class Codes [19, 20, 21, 22], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_6": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 6 (forest)",
+      "title": "Fraction of class 6 (forest), Corine Class Codes [23, 24, 25], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_7": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 7 (misc_vegetation)",
+      "title": "Fraction of class 7 (misc_vegetation), Corine Class Codes [26, 27, 28, 29], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_8": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 8 (misc_no_vegetation)",
+      "title": "Fraction of class 8 (misc_no_vegetation), Corine Class Codes [30, 31, 32, 33, 34], for every grid cell, based on Corine Land Cover 2018"
+    },
+    "CLC_2018_9": {
+      "_FillValue": "nan",
+      "coordinates": "band spatial_ref",
+      "units": "/100 %",
+      "long_name": "Fraction of lc class 9 (water)",
+      "title": "Fraction of class 9 (water), Corine Class Codes [>=35], for every grid cell, based on Corine Land Cover 2018"
+    }
+  },
+  "arrays": {
+    "x": {
+      "shape": [
+        1253
+      ],
+      "dtype": "float64",
+      "nan_count": 0
+    },
+    "y": {
+      "shape": [
+        983
+      ],
+      "dtype": "float64",
+      "nan_count": 0
+    },
+    "land_mask": {
+      "shape": [
+        983,
+        1253
+      ],
+      "dtype": "bool",
+      "nan_count": 0
+    },
+    "grid_unit_id": {
+      "shape": [
+        983,
+        1253
+      ],
+      "dtype": "int32",
+      "nan_count": 0
+    },
+    "static": {
+      "shape": [
+        4022,
+        4
+      ],
+      "dtype": "float32",
+      "nan_count": 0
+    },
+    "population": {
+      "shape": [
+        13,
+        4022
+      ],
+      "dtype": "float32",
+      "nan_count": 0
+    },
+    "clc": {
+      "shape": [
+        4022,
+        10
+      ],
+      "dtype": "float32",
+      "nan_count": 0
+    },
+    "unit_area_km2": {
+      "shape": [
+        4022
+      ],
+      "dtype": "float64",
+      "nan_count": 0
+    }
+  },
+  "operational_validity": false
+}

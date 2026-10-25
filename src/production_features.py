@@ -26,10 +26,12 @@ from .firecube_live import (
     CLC_VARS,
     DailyValues,
     DynamicProvider,
+    HistoricalCubeDynamicProvider,
     OpenMeteoWeatherProvider,
     ORNLModisEOProvider,
     ProviderStatus,
 )
+from .static_geography import CompactStaticFeatureProvider
 
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCTION_MODEL_DIR = ROOT / "models" / "production"
@@ -189,7 +191,11 @@ class ProductionFeaturePipeline:
         preprocessor: ProductionPreprocessor | None = None,
     ) -> None:
         self.dynamic_provider = dynamic_provider or _CombinedLiveProvider()
-        self.static_provider = static_provider or FireCubeStaticFeatureProvider()
+        # Preserve the original cube-backed static path for historical replay.
+        self.static_provider = static_provider or (
+            FireCubeStaticFeatureProvider() if isinstance(dynamic_provider, HistoricalCubeDynamicProvider)
+            else CompactStaticFeatureProvider()
+        )
         self.preprocessor = preprocessor
 
     def build(self, latitude: float, longitude: float, target_date: str | date | datetime) -> ProductionFeatureRequest:

@@ -38,7 +38,8 @@ def test_production_pipeline_has_stable_35_feature_schema_and_provenance():
     assert request.raw_features.shape == (FEATURE_COUNT,)
     assert request.model_features.shape == (FEATURE_COUNT,)
     assert request.feature_names == production_feature_names()
-    assert request.raw_feature_values["ndvi__mean10"] != request.raw_feature_values["ndvi__last_tminus1"]
+    raw = request.as_dict()["raw_feature_values"]
+    assert raw["ndvi__mean10"] != raw["ndvi__last_tminus1"]
     assert request.feature_provenance["ndvi__mean10"]["approximate"] is True
     assert request.location_metadata["provider"] == "stub-static"
 

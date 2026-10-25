@@ -2,7 +2,8 @@
 setlocal EnableExtensions
 
 set "PROJECT_ROOT=%~dp0"
-set "RUNTIME=C:\Users\prabh\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe"
+set "RUNTIME=%PROJECT_ROOT%.venv\Scripts\python.exe"
+if defined FIRE_WARNING_PYTHON set "RUNTIME=%FIRE_WARNING_PYTHON%"
 set "PORT=8502"
 set "URL=http://127.0.0.1:%PORT%"
 set "LOG_DIR=%PROJECT_ROOT%.cache"
@@ -14,18 +15,25 @@ if not exist "%RUNTIME%" (
     echo Working Python runtime was not found:
     echo   %RUNTIME%
     echo.
-    echo Update RUNTIME in this launcher after installing or configuring the project runtime.
+    echo Run powershell -ExecutionPolicy Bypass -File setup.ps1
+    echo Or set FIRE_WARNING_PYTHON to a configured Python executable.
     pause
     exit /b 1
 )
 
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%" >nul 2>&1
 
-set "PYTHONPATH=%PROJECT_ROOT%.venv\Lib\site-packages;%PROJECT_ROOT%;%PYTHONPATH%"
+"%RUNTIME%" -c "import streamlit" >nul 2>&1
+if errorlevel 1 (
+    echo Python or Streamlit is unavailable. Run setup.ps1 to repair the environment.
+    pause
+    exit /b 1
+)
 set "PYTHONUTF8=1"
 
 echo Starting Fire Early Warning at %URL% ...
-powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$args=@('-m','streamlit','run','%PROJECT_ROOT%app.py','--server.headless','true','--server.address','127.0.0.1','--server.port','%PORT%','--browser.gatherUsageStats','false'); Start-Process -FilePath '%RUNTIME%' -ArgumentList $args -WorkingDirectory '%PROJECT_ROOT%' -RedirectStandardOutput '%LOG_FILE%' -RedirectStandardError '%ERR_FILE%' -WindowStyle Hidden | Out-Null"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%PROJECT_ROOT%scripts\start_demo.ps1" -Python "%RUNTIME%" -Port %PORT%
+if errorlevel 1 exit /b 1
 
 set "READY=0"
 for /l %%I in (1,1,30) do (

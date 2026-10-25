@@ -12,8 +12,10 @@ remain available for inspection or future research work.
   production prediction pipeline, place search, and legacy MVP inference.
 - `models/` — production XGBoost artifacts and the legacy image/weather MVP
   artifacts used by the application tabs.
-- `data/raw/firecube/dataset_greece.nc` — required read-only FireCube source
-  data for location mapping, static features, and historical mode.
+- `models/production/greece_static_v1.npz` and matching `.json` — compact,
+  versioned Greece mapping and static geography required for live Track-B.
+- `data/raw/firecube/dataset_greece.nc` — optional read-only source for
+  historical replay and compact-artifact regeneration/parity verification.
 - `data/images/samples/` — bundled images used by the Image MVP tab.
 - `results/firecube_direct_10km_artifact_rerun/` — retained only
   `xgb_direct_10km.joblib` and `feature_aggregation.json`, which are loaded
@@ -23,9 +25,12 @@ remain available for inspection or future research work.
   artifact.
 - `requirements.txt`, `README.md`, and `tests/` — run guidance and focused
   application checks.
-- `.venv/` — retained because the existing launcher explicitly uses its
-  `Lib/site-packages` directory. It is a local dependency, not a research
-  artifact.
+- `.venv/` — local environment created by `setup.ps1`; the portable launcher
+  uses its Python executable (or `FIRE_WARNING_PYTHON`). Never included in Git.
+- `setup.ps1`, `scripts/start_demo.ps1`, dependency constraints and CI/test
+  configuration — portable setup and verification helpers.
+- `scripts/export_static_geography.py`, `scripts/verify_static_geography.py`
+  and `docs/STATIC_GEOGRAPHY.md` — compact-artifact generation and audit trail.
 
 ## Required for research / reproducibility (archived)
 

@@ -133,20 +133,21 @@ Median imputation and StandardScaler are fit on training data only and saved. Sc
 **src/place_search.py:** Nominatim searches, caching, request spacing and errors.
 **src/firecube_live.py:** Open-Meteo/ORNL providers, historical dynamic data, JSON cache and a legacy live adapter. Providers return values with availability/approximation metadata.
 **src/production_features.py:** Geography/static provider, ten-day feature construction, saved imputation/scaling and 35-feature schema.
+**src/static_geography.py:** Checksum-verified compact Greece mapping/static features for live Track-B; historical replay retains the cube-backed provider. See STATIC_GEOGRAPHY.md for provenance and parity evidence.
 **src/production_model.py:** Model/schema checks and prediction service. Withholds live output when all six weather-history means are unavailable.
 **src/firecube_inference.py:** Historical Exp5 loading, domain mapping and prediction.
 **src/benchmark_direct_10km.py:** Shared aggregation/feature functions imported at runtime despite its research name.
 **src/predict.py:** Legacy image/weather/fusion inference.
 
 **models/production/:** Track-B model, preprocessor, schema, metrics and manifest. Other models/ files contain legacy MVP artifacts.
-**data/raw/firecube/dataset_greece.nc:** Required local cube. **data/images/samples/:** UI image examples.
+**models/production/greece_static_v1.npz + .json:** Required compact geography for live Track-B. **data/raw/firecube/dataset_greece.nc:** Optional local cube required for historical replay. **data/images/samples/:** UI image examples.
 **results/:** Retained runtime research dependencies: recovered Exp5 model/config and Exp7 flat calibrator.
 **research_archive/:** Completed experiments, prediction exports, reports, training source/data. **README.md, requirements.txt, CLEANUP_MANIFEST.md:** Run notes, dependencies and cleanup record.
 
 ### 12. What tests demonstrate
 Tests cover historical feature order/dimension, domain rejection, provider approximation flags, cache behaviour, search errors and weather failures. Prior cleanup checks verified compilation, startup, search/weather retrieval, prediction and map rendering. Software checks are not ML validation.
 
-The production-pipeline test refers to request.raw_feature_values, but that name is exposed by as_dict(), not a dataclass attribute. Do not claim the entire suite passes. Archived scripts retain original relative paths/imports; path restoration is needed before reruns. The README retains historical commands with archived paths. This guide documents these caveats without changing code.
+The pending production-pipeline test correction uses as_dict() to access raw_feature_values. Compact-artifact tests additionally cover integrity, mapping, missing values, inference without NetCDF access and optional cube parity. Actual test counts belong to each verification run. Archived scripts retain original relative paths/imports; path restoration may be needed before research reruns.
 
 ---PAGE---
 # Scientific limitations and viva answers
