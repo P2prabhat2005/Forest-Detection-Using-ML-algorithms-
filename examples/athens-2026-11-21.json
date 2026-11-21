@@ -1,0 +1,657 @@
+{
+  "resolved_place": "Athens, Municipality of Athens, Regional Unit of Central Athens, Attica, 105 57, Greece",
+  "latitude": 37.9755648,
+  "longitude": 23.7348324,
+  "requested_at": "2026-11-21T18:43:24.524486+00:00",
+  "target_date": "2026-11-21",
+  "schema": "track_b_production_v1",
+  "feature_names": [
+    "max_t2m__mean10",
+    "max_d2m__mean10",
+    "min_rh__mean10",
+    "max_tp__mean10",
+    "max_sp__mean10",
+    "max_wind_speed__mean10",
+    "ndvi__mean10",
+    "lst_day__mean10",
+    "lst_night__mean10",
+    "sminx__mean10",
+    "max_t2m__last_tminus1",
+    "max_d2m__last_tminus1",
+    "min_rh__last_tminus1",
+    "max_tp__last_tminus1",
+    "max_sp__last_tminus1",
+    "max_wind_speed__last_tminus1",
+    "ndvi__last_tminus1",
+    "lst_day__last_tminus1",
+    "lst_night__last_tminus1",
+    "sminx__last_tminus1",
+    "DEM__mean",
+    "SLOPE__mean",
+    "ROAD_DISTANCE__min",
+    "WATERWAY_DISTANCE__min",
+    "POP_DENS__mean",
+    "CLC_2018_0__mean",
+    "CLC_2018_1__mean",
+    "CLC_2018_2__mean",
+    "CLC_2018_3__mean",
+    "CLC_2018_4__mean",
+    "CLC_2018_5__mean",
+    "CLC_2018_6__mean",
+    "CLC_2018_7__mean",
+    "CLC_2018_8__mean",
+    "CLC_2018_9__mean"
+  ],
+  "feature_values": {
+    "max_t2m__mean10": 0.19903069734573364,
+    "max_d2m__mean10": 0.8395169973373413,
+    "min_rh__mean10": 0.8267902731895447,
+    "max_tp__mean10": -0.7430633306503296,
+    "max_sp__mean10": 1.247359037399292,
+    "max_wind_speed__mean10": -0.15699344873428345,
+    "ndvi__mean10": 0.023460088297724724,
+    "lst_day__mean10": 0.12160935997962952,
+    "lst_night__mean10": 0.12025024741888046,
+    "sminx__mean10": -1.260496735572815,
+    "max_t2m__last_tminus1": 0.23708327114582062,
+    "max_d2m__last_tminus1": 0.8881877064704895,
+    "min_rh__last_tminus1": 0.49445000290870667,
+    "max_tp__last_tminus1": -0.41686955094337463,
+    "max_sp__last_tminus1": 1.1729639768600464,
+    "max_wind_speed__last_tminus1": -0.8680070042610168,
+    "ndvi__last_tminus1": 0.02293851226568222,
+    "lst_day__last_tminus1": 0.21865525841712952,
+    "lst_night__last_tminus1": 0.227761372923851,
+    "sminx__last_tminus1": -1.3773541450500488,
+    "DEM__mean": -0.6847702860832214,
+    "SLOPE__mean": -0.21056655049324036,
+    "ROAD_DISTANCE__min": -0.9379465579986572,
+    "WATERWAY_DISTANCE__min": -0.9652422666549683,
+    "POP_DENS__mean": 14.318280220031738,
+    "CLC_2018_0__mean": 10.577215194702148,
+    "CLC_2018_1__mean": 0.8314209580421448,
+    "CLC_2018_2__mean": -0.3234099745750427,
+    "CLC_2018_3__mean": -0.24737709760665894,
+    "CLC_2018_4__mean": -0.25194066762924194,
+    "CLC_2018_5__mean": -0.4787119925022125,
+    "CLC_2018_6__mean": -0.2536343038082123,
+    "CLC_2018_7__mean": -0.7515406608581543,
+    "CLC_2018_8__mean": 0.12054204195737839,
+    "CLC_2018_9__mean": -0.15514731407165527
+  },
+  "missing_features": [
+    "ndvi__mean10",
+    "lst_day__mean10",
+    "lst_night__mean10",
+    "ndvi__last_tminus1",
+    "lst_day__last_tminus1",
+    "lst_night__last_tminus1"
+  ],
+  "feature_provenance": {
+    "max_t2m__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "max_t2m__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "max_d2m__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "max_d2m__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "min_rh__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "min_rh__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "max_tp__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "max_tp__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "max_sp__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "max_sp__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "max_wind_speed__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "max_wind_speed__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": false,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "ndvi__mean10": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "mean10"
+    },
+    "ndvi__last_tminus1": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "last_tminus1"
+    },
+    "lst_day__mean10": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "mean10"
+    },
+    "lst_day__last_tminus1": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "last_tminus1"
+    },
+    "lst_night__mean10": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "mean10"
+    },
+    "lst_night__last_tminus1": {
+      "sources": [
+        "open-meteo+ornl-modis-eo"
+      ],
+      "dates": [],
+      "approximate": true,
+      "missing_days": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "aggregation": "last_tminus1"
+    },
+    "sminx__mean10": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "mean10"
+    },
+    "sminx__last_tminus1": {
+      "sources": [
+        "Open-Meteo hourly weather / soil moisture"
+      ],
+      "dates": [
+        "2026-11-11",
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20"
+      ],
+      "approximate": true,
+      "missing_days": [],
+      "aggregation": "last_tminus1"
+    },
+    "DEM__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "historical static raster (date unspecified)"
+      ],
+      "approximate": true
+    },
+    "SLOPE__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "historical static raster (date unspecified)"
+      ],
+      "approximate": true
+    },
+    "ROAD_DISTANCE__min": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "historical static raster (date unspecified)"
+      ],
+      "approximate": true
+    },
+    "WATERWAY_DISTANCE__min": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "historical static raster (date unspecified)"
+      ],
+      "approximate": true
+    },
+    "POP_DENS__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2021"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_0__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_1__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_2__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_3__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_4__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_5__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_6__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_7__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_8__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    },
+    "CLC_2018_9__mean": {
+      "sources": [
+        "FireCube static geography (compact v1)"
+      ],
+      "dates": [
+        "2018"
+      ],
+      "approximate": true
+    }
+  },
+  "raw_probability": 0.012668921612203121,
+  "current_weather": {
+    "available": true,
+    "source": "https://api.open-meteo.com/v1/forecast",
+    "timestamp": "2026-11-21T18:30",
+    "timezone": "UTC",
+    "retrieved_at": "2026-11-21T18:43:29.578037+00:00",
+    "values": {
+      "time": "2026-11-21T18:30",
+      "interval": 900,
+      "temperature_2m": 17.2,
+      "relative_humidity_2m": 62,
+      "wind_speed_10m": 0.7,
+      "precipitation": 0.0,
+      "surface_pressure": 1007.2
+    },
+    "units": {
+      "time": "iso8601",
+      "interval": "seconds",
+      "temperature_2m": "\u00b0C",
+      "relative_humidity_2m": "%",
+      "wind_speed_10m": "km/h",
+      "precipitation": "mm",
+      "surface_pressure": "hPa"
+    },
+    "approximate": true,
+    "message": "Current modelled weather from Open-Meteo"
+  },
+  "history_window": "t-10..t-1 (completed UTC days)",
+  "model": "Track-B production XGBoost baseline"
+}

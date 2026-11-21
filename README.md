@@ -4,10 +4,16 @@ This repository contains the current Streamlit faculty demo. Start it with
 `run_fire_warning.bat` on Windows after setup, or run
 `streamlit run app.py` from a configured Python environment.
 
-The primary experience is **Fire Early Warning**: place search, selected
-location, current/recent environmental inputs, Track-B XGBoost model score,
-map, and data-quality explanation. The image, weather, and combined MVP tabs
-remain available as supporting demonstrations.
+On the **ForestSentinels** live dashboard, search for a Greek place, select
+**Use Athens**, or enter coordinates. Choose **Get experimental score** to
+generate a briefing with the Track-B score, model input dates, weather snapshot,
+and input-quality details. The briefing can be downloaded as Markdown or as a
+printable HTML report that opens in a browser.
+
+For a repeatable classroom demonstration, choose **Recorded Athens demo**.
+It displays the saved 21 November 2026 UTC run from
+`examples/athens-2026-11-21.json`. The readings and reports work without
+provider requests. The map background may require internet access.
 
 Completed experiments and training inputs are preserved locally in
 `research_archive/`; Git includes only selected small documentation, scripts,
