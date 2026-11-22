@@ -22,6 +22,7 @@ function loadLeaflet() {
 export default function render({ parentElement, data, setTriggerValue }) {
     const node = parentElement.querySelector(".explorer-map");
     const feedback = parentElement.querySelector(".map-feedback");
+    const zoomUnit = parentElement.querySelector(".zoom-model-unit");
     let alive = true;
     loadLeaflet().then(L => {
         if (!alive) return;
@@ -43,19 +44,36 @@ export default function render({ parentElement, data, setTriggerValue }) {
             reset.disabled = false;
             map.fitBounds(data.bounds, { padding: [16, 16] });
             const coverage = data.coverage ? L.imageOverlay(data.coverage, data.bounds, {interactive: false}) : null;
+            const unitPane = map.createPane("selectedUnit");
+            unitPane.style.zIndex = "410";
+            unitPane.style.pointerEvents = "none";
+            const modelUnit = L.layerGroup().addTo(map);
             const selection = L.layerGroup().addTo(map);
             const hotspots = L.layerGroup().addTo(map);
             const observer = new ResizeObserver(() => map.invalidateSize({pan: false}));
             observer.observe(node);
-            state = node.mapState = { map, coverage, selection, hotspots, observer };
+            state = node.mapState = { map, coverage, modelUnit, selection, hotspots, observer };
             map.on("click", event => state.pick?.(event));
         }
         feedback.hidden = true;
-        const { map, coverage, selection, hotspots } = state;
+        const { map, coverage, modelUnit, selection, hotspots } = state;
         if (coverage) {
             if (data.showCoverage) coverage.addTo(map);
             else coverage.remove();
         }
+        const unit = data.unit;
+        if (unit?.id !== state.unitId) {
+            state.unitId = unit?.id;
+            modelUnit.clearLayers();
+            if (unit) {
+                L.imageOverlay(unit.image, unit.bounds, { pane: "selectedUnit", interactive: false }).addTo(modelUnit);
+                L.rectangle(unit.bounds, {
+                    pane: "selectedUnit", color: "#4b3e9d", fill: false, weight: 2, dashArray: "5 3", interactive: false,
+                }).addTo(modelUnit);
+            }
+        }
+        zoomUnit.hidden = !unit;
+        zoomUnit.onclick = unit ? () => map.fitBounds(unit.bounds, { maxZoom: 13, padding: [30, 30] }) : null;
         const selectionKey = JSON.stringify(data.selection);
         if (selectionKey !== state.selectionKey) {
             state.selectionKey = selectionKey;
@@ -64,6 +82,7 @@ export default function render({ parentElement, data, setTriggerValue }) {
                 L.circleMarker(data.selection, {
                     radius: 8, color: "#fff", weight: 3, fillColor: "#006857",
                     fillOpacity: 1, interactive: false,
+                    pane: "markerPane",
                 }).addTo(selection);
                 if (data.focusSelection) map.setView(data.selection, 8);
             }

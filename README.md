@@ -6,8 +6,11 @@ This repository contains the current Streamlit faculty demo. Start it with
 
 On the **ForestSentinels** wildfire map explorer, click a point on the map,
 search for a Greek place, select **Use Athens**, or enter coordinates. The
-coverage layer uses the versioned FireCube land mask. The briefing checks the
-exact grid cell and shows its model unit before enabling **Get experimental score**.
+coverage layer uses the versioned FireCube land mask. For an eligible point
+the map highlights its model block and shades the land cells used by that unit.
+**Zoom to model unit** fits the selected block. The briefing shows its mapped
+land area and gives you a copyable coordinate link. A shared link selects
+the point when opened, ready for the visitor to run an analysis.
 The map also provides street and Blue Marble imagery basemaps and a **Reset to Greece** control.
 
 Each live briefing contains the Track-B score, model input dates, a separate
@@ -15,7 +18,8 @@ weather snapshot, input quality, and charts for ten completed UTC days. Chart
 values come from the same weather inputs before standardization or imputation.
 Precipitation is the peak hourly reading on each day. A blank day means the
 provider did not return that value. Download the briefing as Markdown or as
-printable HTML.
+printable HTML. The weather history section offers a CSV of the chart inputs
+in display units, with missing values left blank.
 
 The optional **Satellite hotspots** layer queries [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/api/area)
 for NOAA-20 VIIRS detections within the map region. Set `FIRMS_MAP_KEY` in the

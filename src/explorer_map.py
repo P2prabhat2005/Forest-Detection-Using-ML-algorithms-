@@ -17,14 +17,18 @@ def _map_component():
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
         <div class="map-shell">
           <div class="explorer-map" aria-label="Interactive map of Greece"></div>
-          <button class="reset-map" type="button" disabled>Reset to Greece</button>
+          <div class="map-navigation">
+            <button class="reset-map" type="button" disabled>Reset to Greece</button>
+            <button class="zoom-model-unit" type="button" hidden>Zoom to model unit</button>
+          </div>
           <p class="map-feedback" role="status">Loading the interactive map…</p>
         </div>
         """,
         css="""
         .map-shell {position:relative; isolation:isolate; border:1px solid #b8cfc4; border-radius:14px; overflow:hidden}
         .explorer-map {height:clamp(300px,60vh,620px); background:#e0ece8; cursor:crosshair}
-        .reset-map {position:absolute; bottom:25px; left:10px; z-index:900; padding:.4rem .65rem;
+        .map-navigation {position:absolute; bottom:25px; left:10px; display:flex; flex-wrap:wrap; gap:.3rem; z-index:900}
+        .map-navigation button {padding:.4rem .65rem;
           border:1px solid #56706a; border-radius:7px; background:white; color:#133a32; cursor:pointer; font-weight:650}
         .map-feedback {position:absolute; top:50%; left:50%; margin:0; transform:translate(-50%,-50%);
           width:max-content; max-width:85%; z-index:900; background:white; color:#133a32; padding:.65rem; border-radius:7px}

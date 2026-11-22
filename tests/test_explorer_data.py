@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from src.explorer_data import coverage_overlay, parse_firms_csv
+from src.explorer_data import coverage_overlay, model_unit_overlay, parse_firms_csv, parse_shared_location, share_location_url
 from src.static_geography import CompactStaticFeatureProvider
 
 
@@ -27,6 +27,33 @@ def test_coverage_overlay_preserves_geographic_bounds_and_land_at_athens():
 
     assert alpha_at(37.9755648, 23.7348324) > 0
     assert alpha_at(36.0, 25.0) == 0
+
+
+def test_model_unit_overlay_uses_selected_land_cells_and_unit_area():
+    provider = CompactStaticFeatureProvider()
+    latitude, longitude = 36.42, 25.43
+    _, _, location = provider.fetch_static(latitude, longitude, 2026)
+    layer = model_unit_overlay(provider, location)
+    assert layer["id"] == location["unit_id"]
+    assert layer["landAreaKm2"] == provider.arrays["unit_area_km2"][layer["id"]]
+    (south, west), (north, east) = layer["bounds"]
+    assert south <= latitude <= north and west <= longitude <= east
+    image = Image.open(BytesIO(b64decode(layer["image"].split(",", 1)[1])))
+    assert image.size == (14, 11)
+    assert set(np.unique(np.asarray(image.getchannel("A")))) == {0, 180}
+
+
+@pytest.mark.parametrize("malformed", ["", "38", "38,24,0", "nan,23", "38,inf", "91,24", "38,-181"])
+def test_invalid_shared_coordinates(malformed):
+    with pytest.raises(ValueError):
+        parse_shared_location(malformed)
+
+
+def test_cloud_share_link_uses_public_url():
+    assert share_location_url("https://forestsentinels.streamlit.app/~/+/", 38.0, 23.5) == (
+        "https://forestsentinels.vercel.app/?at=38.0%2C23.5"
+    )
+    assert share_location_url("http://127.0.0.1:8521", 38.0, 23.5) == "http://127.0.0.1:8521?at=38.0%2C23.5"
 
 
 def test_firms_filters_and_deduplicates_using_acquisition_time():

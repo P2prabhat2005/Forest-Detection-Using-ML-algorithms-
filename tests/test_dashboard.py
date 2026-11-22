@@ -158,3 +158,15 @@ def test_map_explorer_rejects_water_before_inference_and_shows_missing_key(monke
     assert not app.exception
     assert any("non-land FireCube cell" in warning.value for warning in app.warning)
     assert not any(b.key == "production_predict_live" for b in app.button)
+
+
+def test_shared_location_reopens_exact_point_without_running_inference():
+    app = AppTest.from_file(str(APP), default_timeout=60)
+    app.query_params["at"] = "37.9755648,23.7348324"
+    app.run()
+    assert not app.exception
+    point = app.session_state["explorer_selection"]
+    assert (point["latitude"], point["longitude"]) == (37.9755648, 23.7348324)
+    assert any("Model unit 3,156" in note.value for note in app.caption)
+    assert any("37.9755648%2C23.7348324" in element.value for element in app.code)
+    assert "explorer_result" not in app.session_state

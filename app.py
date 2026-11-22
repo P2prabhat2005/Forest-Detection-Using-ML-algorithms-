@@ -20,7 +20,14 @@ import streamlit as st
 from PIL import Image
 
 from src.firecube_inference import FireCubeExp5Inference, FireCubeInferenceError
-from src.explorer_data import FIRMS_WINDOWS, coverage_overlay, fetch_firms_hotspots
+from src.explorer_data import (
+    FIRMS_WINDOWS,
+    coverage_overlay,
+    fetch_firms_hotspots,
+    model_unit_overlay,
+    parse_shared_location,
+    share_location_url,
+)
 from src.explorer_map import explorer_map
 from src.firecube_live import HistoricalCubeDynamicProvider
 from src.production_features import ProductionFeaturePipeline, ProductionPreprocessor
@@ -331,6 +338,7 @@ def _demo_styles() -> None:
         .explorer-legend i {width:11px; height:11px; display:inline-block; border:1px solid #314d46}
         .legend-coverage {background:#7dc1a9; border-radius:2px}
         .legend-selection {background:#006857; border-radius:100%}
+        .legend-unit {background:#6051bb; border-radius:2px}
         .legend-hotspot {background:#ff9a44; border-color:#9a3400 !important; border-radius:100%}
         @media(min-width:851px) {
           .st-key-explorer_layout [data-testid="stColumn"]:has(.st-key-explorer_map_pane) {position:sticky; top:3.5rem; align-self:flex-start}
@@ -621,7 +629,16 @@ def _weather_history(result: dict) -> None:
             tooltip=["UTC day", alt.Tooltip(field=variable, type="quantitative", format=".1f")],
         )
         st.altair_chart(chart, height=190, width="stretch")
-        st.dataframe(frame, hide_index=True, width="stretch")
+        st.dataframe(frame, hide_index=True, width="stretch", column_config={
+            label: st.column_config.NumberColumn(format="%.2f") for label in labels.values()
+        })
+        st.download_button(
+            "Download 10-day model weather CSV",
+            pd.DataFrame(rows).to_csv(index=False),
+            file_name=f"forestsentinels-weather-{result['target_date']}.csv",
+            mime="text/csv",
+            on_click="ignore",
+        )
 
 
 def _dashboard_result(
@@ -744,7 +761,7 @@ def _search_explorer() -> None:
                      key="production_place_choice", on_change=_choose_place)
 
 
-def _run_location_analysis(point: dict | None, geo: CompactStaticFeatureProvider | None, result_slot) -> None:
+def _run_location_analysis(point: dict | None, unit: dict | None, selection_error: str | None, result_slot) -> None:
     with result_slot:
         if point is None:
             st.subheader("Location briefing")
@@ -755,15 +772,13 @@ def _run_location_analysis(point: dict | None, geo: CompactStaticFeatureProvider
         if previous is not None and (previous["latitude"], previous["longitude"], previous["resolved_place"]) != (lat, lon, name):
             st.session_state.pop("explorer_result", None)
         st.caption(f"{name} · {lat:.5f}, {lon:.5f}")
-        if geo is None:
-            st.error("Greece model coverage is unavailable. Restore the compact geography artifact before running analysis.")
+        if unit is None:
+            st.warning(selection_error)
             return
-        try:
-            _, _, location = geo.fetch_static(lat, lon, date.today().year)
-        except FireCubeInferenceError as exc:
-            st.warning(f"Analysis unavailable at this location. {exc}.")
-            return
-        st.caption(f"Eligible FireCube land cell · Model unit {location['unit_id']:,}")
+        st.caption(f"Eligible FireCube land cell · Model unit {unit['id']:,} · {unit['landAreaKm2']:.1f} km² mapped land")
+        with st.expander("Share this location"):
+            st.code(share_location_url(st.context.url, lat, lon), language=None)
+            st.caption("The link opens these coordinates. Visitors can run their own analysis.")
         service = load_production_service(historical=False)
         if service is None:
             st.error("Prediction assets are unavailable. Run `python -m src.check_setup` for details.")
@@ -785,6 +800,13 @@ def _run_location_analysis(point: dict | None, geo: CompactStaticFeatureProvider
 def live_explorer() -> None:
     st.markdown("<header class='explorer-head'><div class='brand'>ForestSentinels · Greece</div>"
                 "<h1>Wildfire map explorer</h1></header>", unsafe_allow_html=True)
+    if "explorer_link_loaded" not in st.session_state:
+        st.session_state["explorer_link_loaded"] = True
+        if "at" in st.query_params:
+            try:
+                _select_coordinates(*parse_shared_location(st.query_params["at"]), focus=True)
+            except ValueError:
+                st.warning("This location link is invalid. Search or select a point on the map.")
     with st.container(key="explorer_controls"):
         mode = st.radio("Choose how to explore", ["Place search", "Coordinates", "Recorded Athens demo"],
                         horizontal=True, key="explore_mode", label_visibility="collapsed")
@@ -813,6 +835,15 @@ def live_explorer() -> None:
     except StaticArtifactError:
         geo = None
         layer = {"bounds": [[34.3, 18.7], [42.3, 28.9]], "image": None}
+    unit, selection_error = None, None
+    if point and geo is not None:
+        try:
+            _, _, location = geo.fetch_static(point["latitude"], point["longitude"], date.today().year)
+            unit = model_unit_overlay(geo, location)
+        except FireCubeInferenceError as exc:
+            selection_error = f"Analysis unavailable at this location. {exc}."
+    elif point:
+        selection_error = "Greece model coverage is unavailable. Restore the compact geography artifact before running analysis."
     with st.container(key="explorer_layout"):
         left, right = st.columns([2.35, 1.25], vertical_alignment="top")
         with left, st.container(key="explorer_map_pane"):
@@ -824,11 +855,13 @@ def live_explorer() -> None:
                 "bounds": layer["bounds"], "coverage": layer["image"], "showCoverage": show_coverage and geo is not None,
                 "selection": [point["latitude"], point["longitude"]] if point else None,
                 "focusSelection": recorded or st.session_state.get("explorer_focus", False),
-                "allowPick": not recorded, "hotspots": points,
+                "allowPick": not recorded, "hotspots": points, "unit": unit,
             })
             legend = ["<span><i class='legend-coverage'></i>Eligible land cells</span>"] if show_coverage and geo else []
             if point:
                 legend.append("<span><i class='legend-selection'></i>Selected point</span>")
+            if unit:
+                legend.append("<span><i class='legend-unit'></i>Selected model unit</span>")
             if points:
                 legend.append("<span><i class='legend-hotspot'></i>Satellite thermal detection</span>")
             if legend:
@@ -846,7 +879,7 @@ def live_explorer() -> None:
             with briefing:
                 _dashboard_result({**example, "recorded_demo": True}, None, historical=False, show_map=False)
         else:
-            _run_location_analysis(point, geo, briefing)
+            _run_location_analysis(point, unit, selection_error, briefing)
 
 
 def production_section(historical: bool = False) -> None:

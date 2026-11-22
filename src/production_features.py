@@ -274,7 +274,7 @@ class ProductionFeaturePipeline:
                 row = {"date": day.isoformat()}
                 for source, (label, scale, offset) in display_fields.items():
                     value = float(values[DYNAMIC.index(source)])
-                    row[label] = round(value * scale + offset, 3) if np.isfinite(value) else None
+                    row[label] = value * scale + offset if np.isfinite(value) else None
                 history.append(row)
         return ProductionFeatureRequest(
             float(latitude), float(longitude), target.isoformat(), raw, model_input[0], names,

@@ -7,7 +7,7 @@ import math
 from base64 import b64encode
 from datetime import datetime, timedelta, timezone
 from io import BytesIO, StringIO
-from urllib.parse import quote
+from urllib.parse import quote, urlencode, urlsplit
 from urllib.request import Request, urlopen
 
 import numpy as np
@@ -17,13 +17,16 @@ from .static_geography import CompactStaticFeatureProvider
 
 FIRMS_PRODUCT = "VIIRS_NOAA20_NRT"
 FIRMS_WINDOWS = ("Today UTC", "Last 24 hours", "Last 72 hours")
+PUBLIC_EXPLORER_URL = "https://forestsentinels.vercel.app/"
 
 
 def coverage_overlay(provider: CompactStaticFeatureProvider) -> dict:
     """Render the land mask in the Web Mercator projection used by Leaflet tiles."""
-    x = provider.arrays["x"]
-    y = provider.arrays["y"]
-    land = provider.arrays["land_mask"]
+    arrays = provider.arrays
+    return _mask_overlay(arrays["x"], arrays["y"], arrays["land_mask"], (43, 155, 118, 104))
+
+
+def _mask_overlay(x: np.ndarray, y: np.ndarray, land: np.ndarray, color: tuple) -> dict:
     if x[0] > x[-1]:
         x, land = x[::-1], land[:, ::-1]
     if y[0] < y[-1]:
@@ -33,13 +36,51 @@ def coverage_overlay(provider: CompactStaticFeatureProvider) -> dict:
     uniform_y = np.linspace(mercator[0], mercator[-1], y.size)
     row_indices = np.rint(np.interp(uniform_y, mercator[::-1], np.arange(y.size)[::-1])).astype(int)
     rgba = np.zeros((*land.shape, 4), dtype=np.uint8)
-    rgba[land[row_indices]] = (43, 155, 118, 104)
+    rgba[land[row_indices]] = color
     buffer = BytesIO()
     Image.fromarray(rgba).save(buffer, format="PNG")
     return {
         "bounds": [[float(y[-1]), float(x[0])], [float(y[0]), float(x[-1])]],
         "image": "data:image/png;base64," + b64encode(buffer.getvalue()).decode("ascii"),
     }
+
+
+def model_unit_overlay(provider: CompactStaticFeatureProvider, location: dict) -> dict:
+    """Highlight the eligible land cells in the selected Track-B grid block."""
+    stride = provider.manifest["stride_cells"]
+    unit_id = location["unit_id"]
+    start_y = location["grid_y"] // stride["y"] * stride["y"]
+    start_x = location["grid_x"] // stride["x"] * stride["x"]
+    rows = slice(start_y, start_y + stride["y"])
+    columns = slice(start_x, start_x + stride["x"])
+    arrays = provider.arrays
+    x, y = arrays["x"][columns], arrays["y"][rows]
+    land = arrays["grid_unit_id"][rows, columns] == unit_id
+    layer = _mask_overlay(x, y, land, (96, 81, 187, 180))
+    # Use nearest-centre cell edges for the enclosing block, clipped to model bounds.
+    dx = abs(float(arrays["x"][1] - arrays["x"][0])) / 2
+    dy = abs(float(arrays["y"][1] - arrays["y"][0])) / 2
+    layer["bounds"] = [
+        [max(float(arrays["y"].min()), float(y.min()) - dy), max(float(arrays["x"].min()), float(x.min()) - dx)],
+        [min(float(arrays["y"].max()), float(y.max()) + dy), min(float(arrays["x"].max()), float(x.max()) + dx)],
+    ]
+    layer["id"] = unit_id
+    layer["landAreaKm2"] = float(arrays["unit_area_km2"][unit_id])
+    return layer
+
+
+def parse_shared_location(value: str) -> tuple[float, float]:
+    latitude, longitude = (float(part) for part in value.split(","))
+    if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
+        raise ValueError("Coordinates are outside valid latitude and longitude limits")
+    return latitude, longitude
+
+
+def share_location_url(app_url: str | None, latitude: float, longitude: float) -> str:
+    # Community Cloud reports its internal iframe path. Share the public alias.
+    if not app_url or urlsplit(app_url).hostname == "forestsentinels.streamlit.app":
+        app_url = PUBLIC_EXPLORER_URL
+    return f"{app_url}?{urlencode({'at': f'{latitude},{longitude}'})}"
 
 
 def parse_firms_csv(payload: str, bounds: list, start: datetime, end: datetime) -> list[dict]:
