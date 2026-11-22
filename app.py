@@ -307,7 +307,8 @@ def _demo_styles() -> None:
         div[data-testid="stAlert"] { background:#eaf2f6; border:1px solid #c4d8e1; box-shadow:none; }
         div[data-testid="stAlert"] > div { background:transparent; }
         div[data-testid="stAlert"] *, div[data-testid="stAlert"] p { color:#163f5f !important; opacity:1 !important; font-weight:550; }
-        div[data-testid="stExpander"] details > summary { background:#173c34; border-radius:10px; padding:.55rem .8rem; }
+        div[data-testid="stExpander"] details > summary { background:#173c34 !important; border-radius:10px; padding:.55rem .8rem; }
+        div[data-testid="stExpander"] details > summary:hover { background:#245746 !important; }
         div[data-testid="stExpander"] details > summary, div[data-testid="stExpander"] details > summary * { color:#fff !important; opacity:1 !important; font-weight:700; }
         div[data-testid="stVerticalBlockBorderWrapper"]:has(>div[data-testid="stVerticalBlock"]) { border-color:var(--line); }
         .stButton>button[kind="primary"], .stFormSubmitButton>button[kind="primary"] { background:#225e49; border-color:#225e49; border-radius:9px; font-weight:700; }
