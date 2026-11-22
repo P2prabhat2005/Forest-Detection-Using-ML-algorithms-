@@ -4,16 +4,32 @@ This repository contains the current Streamlit faculty demo. Start it with
 `run_fire_warning.bat` on Windows after setup, or run
 `streamlit run app.py` from a configured Python environment.
 
-On the **ForestSentinels** live dashboard, search for a Greek place, select
-**Use Athens**, or enter coordinates. Choose **Get experimental score** to
-generate a briefing with the Track-B score, model input dates, weather snapshot,
-and input-quality details. The briefing can be downloaded as Markdown or as a
-printable HTML report that opens in a browser.
+On the **ForestSentinels** wildfire map explorer, click a point on the map,
+search for a Greek place, select **Use Athens**, or enter coordinates. The
+coverage layer uses the versioned FireCube land mask. The briefing checks the
+exact grid cell and shows its model unit before enabling **Get experimental score**.
+The map also provides street and Blue Marble imagery basemaps and a **Reset to Greece** control.
+
+Each live briefing contains the Track-B score, model input dates, a separate
+weather snapshot, input quality, and charts for ten completed UTC days. Chart
+values come from the same weather inputs before standardization or imputation.
+Precipitation is the peak hourly reading on each day. A blank day means the
+provider did not return that value. Download the briefing as Markdown or as
+printable HTML.
+
+The optional **Satellite hotspots** layer queries [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/api/area)
+for NOAA-20 VIIRS detections within the map region. Set `FIRMS_MAP_KEY` in the
+server environment, in local `.streamlit/secrets.toml`, or in the Streamlit
+Community Cloud app secrets. Keep the key out of Git. Observation windows
+use UTC and the markers show acquisition time and confidence. Thermal detections
+can include other heat sources. The layer is independent of model inference.
 
 For a repeatable classroom demonstration, choose **Recorded Athens demo**.
 It displays the saved 21 November 2026 UTC run from
 `examples/athens-2026-11-21.json`. The readings and reports work without
-provider requests. The map background may require internet access.
+provider requests. The interactive map loads Leaflet and OpenStreetMap or NASA GIBS tiles over the
+internet. Search and manual coordinates remain available if the map library is
+unreachable.
 
 Completed experiments and training inputs are preserved locally in
 `research_archive/`; Git includes only selected small documentation, scripts,

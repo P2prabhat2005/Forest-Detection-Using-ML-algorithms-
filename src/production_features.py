@@ -10,7 +10,7 @@ every live request.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Protocol
@@ -156,6 +156,7 @@ class ProductionFeatureRequest:
     provider_status: dict[str, list[dict[str, Any]]]
     location_metadata: dict[str, Any]
     schema: str = "track_b_production_v1"
+    weather_history: list[dict[str, str | float | None]] = field(default_factory=list)
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -170,6 +171,7 @@ class ProductionFeatureRequest:
             "feature_provenance": self.feature_provenance,
             "provider_status": self.provider_status,
             "location_metadata": self.location_metadata,
+            "weather_history": self.weather_history,
         }
 
 
@@ -261,10 +263,23 @@ class ProductionFeaturePipeline:
                 "approximate": bool(location.get("historical_static_fallback", False)),
             }
         missing = [name for name, absent in zip(names, missing_mask) if absent]
+        history = []
+        if isinstance(self.dynamic_provider, _CombinedLiveProvider):
+            display_fields = {
+                "max_t2m": ("temperature_c", 1, -273.15),
+                "max_tp": ("peak_hourly_precipitation_mm", 1000, 0),
+                "max_wind_speed": ("wind_kmh", 3.6, 0),
+            }
+            for day, values in zip(window, raw_dynamic):
+                row = {"date": day.isoformat()}
+                for source, (label, scale, offset) in display_fields.items():
+                    value = float(values[DYNAMIC.index(source)])
+                    row[label] = round(value * scale + offset, 3) if np.isfinite(value) else None
+                history.append(row)
         return ProductionFeatureRequest(
             float(latitude), float(longitude), target.isoformat(), raw, model_input[0], names,
             dict(zip(names, model_input[0].astype(float).tolist())), missing, provenance,
-            {"dynamic": statuses}, location,
+            {"dynamic": statuses}, location, weather_history=history,
         )
 
 

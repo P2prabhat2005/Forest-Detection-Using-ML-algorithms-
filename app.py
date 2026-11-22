@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import math
+import os
 import re
 import sys
 from html import escape
@@ -12,16 +14,20 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
+import altair as alt
 import pandas as pd
 import streamlit as st
 from PIL import Image
 
 from src.firecube_inference import FireCubeExp5Inference, FireCubeInferenceError
+from src.explorer_data import FIRMS_WINDOWS, coverage_overlay, fetch_firms_hotspots
+from src.explorer_map import explorer_map
 from src.firecube_live import HistoricalCubeDynamicProvider
 from src.production_features import ProductionFeaturePipeline, ProductionPreprocessor
 from src.production_model import ProductionPredictionService, XGBoostProductionModel
 from src.place_search import NominatimSearch, PlaceSearchError
 from src.predict import ImagePredictor, TabularPredictor, default_weather, fuse_probabilities
+from src.static_geography import CompactStaticFeatureProvider, StaticArtifactError
 
 SAMPLES = ROOT / "data" / "images" / "samples"
 TABULAR_METRICS = ROOT / "models" / "tabular_metrics.json"
@@ -95,10 +101,25 @@ def load_production_service(historical: bool) -> ProductionPredictionService | N
                 preprocessor=preprocessor,
             )
         else:
-            pipeline = ProductionFeaturePipeline(preprocessor=preprocessor)
+            pipeline = ProductionFeaturePipeline(preprocessor=preprocessor, static_provider=load_explorer_geography())
     except (FileNotFoundError, OSError, FireCubeInferenceError):
         return None
     return ProductionPredictionService(pipeline, model)
+
+
+@st.cache_resource(show_spinner=False)
+def load_explorer_geography() -> CompactStaticFeatureProvider:
+    return CompactStaticFeatureProvider()
+
+
+@st.cache_data(show_spinner=False)
+def _explorer_coverage() -> dict:
+    return coverage_overlay(load_explorer_geography())
+
+
+@st.cache_data(ttl=300, max_entries=24, show_spinner=False)
+def _recent_hotspots(key: str, bounds: list, window: str) -> list[dict]:
+    return fetch_firms_hotspots(key, bounds, window)
 
 
 def risk_banner(result: dict) -> None:
@@ -291,6 +312,35 @@ def _demo_styles() -> None:
         div[data-testid="stVerticalBlockBorderWrapper"]:has(>div[data-testid="stVerticalBlock"]) { border-color:var(--line); }
         .stButton>button[kind="primary"], .stFormSubmitButton>button[kind="primary"] { background:#225e49; border-color:#225e49; border-radius:9px; font-weight:700; }
         .stButton>button[kind="primary"]:hover, .stFormSubmitButton>button[kind="primary"]:hover { background:#194b3b; border-color:#194b3b; }
+        .st-key-explorer_layout [data-testid="stColumn"] { min-width:0; }
+        .st-key-explorer_controls { margin-bottom:.4rem; }
+        .explorer-head {padding:.95rem 1.25rem}
+        .st-key-explorer_controls button[data-testid^="stBaseButton-secondary"],
+        .st-key-explorer_map_pane button[data-testid^="stPopoverButton"] {
+          background:#fff; color:#173e36; border:1px solid #91b5a7;
+        }
+        .st-key-explorer_controls button[data-testid^="stBaseButton-secondary"] p,
+        .st-key-explorer_map_pane button[data-testid^="stPopoverButton"] p {color:#173e36}
+        .st-key-explorer_controls button[data-testid^="stBaseButton-primary"],
+        .st-key-explorer_briefing button[data-testid^="stBaseButton-primary"] {
+          background:#22644f; color:#fff; border-color:#22644f;
+        }
+        .explorer-legend {display:flex; flex-wrap:wrap; gap:.65rem 1rem; color:#24483e; font-size:.83rem}
+        .explorer-legend span {display:inline-flex; gap:.35rem; align-items:center}
+        .explorer-legend i {width:11px; height:11px; display:inline-block; border:1px solid #314d46}
+        .legend-coverage {background:#7dc1a9; border-radius:2px}
+        .legend-selection {background:#006857; border-radius:100%}
+        .legend-hotspot {background:#ff9a44; border-color:#9a3400 !important; border-radius:100%}
+        @media(min-width:851px) {
+          .st-key-explorer_layout [data-testid="stColumn"]:has(.st-key-explorer_map_pane) {position:sticky; top:3.5rem; align-self:flex-start}
+          .st-key-explorer_briefing .reading-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+        }
+        @media(max-width:850px){
+          .st-key-explorer_layout > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] {flex-direction:column}
+          .st-key-explorer_layout > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+            width:100% !important; flex:1 1 auto !important;
+          }
+        }
         @media(max-width:700px){.block-container{padding:3rem 1rem}.score-card{min-height:0}}
         </style>
         """,
@@ -550,16 +600,46 @@ def _feature_rows(result: dict) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def _dashboard_result(result: dict, service: ProductionPredictionService | None, historical: bool) -> None:
+def _weather_history(result: dict) -> None:
+    rows = result.get("weather_history", [])
+    with st.expander("Weather history · 10 completed UTC days"):
+        if not rows:
+            st.caption("Daily weather readings were not saved for this run.")
+            return
+        labels = {
+            "temperature_c": "Daily high (°C)",
+            "peak_hourly_precipitation_mm": "Peak hourly precipitation (mm)",
+            "wind_kmh": "Daily peak wind (km/h)",
+        }
+        frame = pd.DataFrame(rows).rename(columns={"date": "UTC day", **labels})
+        st.caption("Open-Meteo inputs before standardization and imputation. Blank days indicate missing values. Precipitation is the highest hourly reading for the day.")
+        variable = st.selectbox("Weather variable", list(labels.values()))
+        chart = alt.Chart(frame).mark_bar(color="#227a62").encode(
+            x=alt.X("UTC day:O", sort=frame["UTC day"].tolist(), axis=alt.Axis(labelAngle=-42)),
+            y=alt.Y(field=variable, type="quantitative", title=variable),
+            tooltip=["UTC day", alt.Tooltip(field=variable, type="quantitative", format=".1f")],
+        )
+        st.altair_chart(chart, height=190, width="stretch")
+        st.dataframe(frame, hide_index=True, width="stretch")
+
+
+def _dashboard_result(
+    result: dict, service: ProductionPredictionService | None, historical: bool, *, show_map: bool = True
+) -> None:
     place = result.get("resolved_place", "Manual coordinates")
     short_name = place.split(",")[0]
     target = date.fromisoformat(result["target_date"])
     mode = _run_mode(result, historical)
-    st.divider()
     st.subheader(f"{short_name} · location briefing")
     st.caption(f"{mode} · Target {target:%d %b %Y} UTC")
-    left, right = st.columns([1, 1])
-    with left:
+    if show_map:
+        summary, map_area = st.columns([1, 1])
+        with map_area:
+            st.map(pd.DataFrame({"latitude": [result["latitude"]], "longitude": [result["longitude"]]}), zoom=8, height=210, width="stretch")
+            st.caption("The marker identifies the selected coordinate.")
+    else:
+        summary = st.container()
+    with summary:
         st.markdown(
             "<div class='score-card'><div class='eyebrow'>Experimental Track-B score</div>"
             f"<div class='score-number'>{result['raw_probability'] * 100:.1f}<span class='score-unit'> / 100</span></div>"
@@ -570,9 +650,6 @@ def _dashboard_result(result: dict, service: ProductionPredictionService | None,
         with st.expander("Location details"):
             st.text(place)
             st.write(f"{result['latitude']:.5f}° N, {result['longitude']:.5f}° E")
-    with right:
-        st.map(pd.DataFrame({"latitude": [result["latitude"]], "longitude": [result["longitude"]]}), zoom=8, height=210, width="stretch")
-        st.caption("The marker identifies the selected coordinate.")
     if not historical:
         st.subheader("Weather at the time of the run")
         current = result.get("current_weather", {})
@@ -580,6 +657,7 @@ def _dashboard_result(result: dict, service: ProductionPredictionService | None,
             _weather_cards(current)
         else:
             st.info(f"Weather snapshot unavailable. {current.get('message', '')}")
+        _weather_history(result)
     _input_evidence_dashboard(result)
     with st.expander("How the saved model uses its inputs"):
         st.write("The highest-ranked inputs below describe the fitted model across locations. Individual scores can depend on different inputs.")
@@ -595,105 +673,213 @@ def _dashboard_result(result: dict, service: ProductionPredictionService | None,
     _report_downloads(result, service, historical)
 
 
-def production_section(historical: bool = False) -> None:
-    """Track-B dashboard; unchanged production service handles all prediction logic."""
-    if historical:
-        st.markdown("<div class='section-kicker'>Historical research</div>", unsafe_allow_html=True)
-        st.subheader("Revisit a FireCube-era date")
-        st.info("Local historical inference only · Greece FireCube domain · example: 38.0000°N, 23.7000°E on 2020-07-15.")
-    else:
-        st.markdown("<header class='explorer-head'><div class='brand'>ForestSentinels · Greece field dashboard</div>"
-                    "<h1>Explore a location in Greece</h1></header>", unsafe_allow_html=True)
-        st.caption("Search a Greece-domain land location to review its weather, experimental score and input quality.")
+def _hotspots_for_map(bounds: list) -> tuple[list[dict], str]:
+    with st.popover("Satellite hotspots"):
+        enabled = st.toggle("Show NASA FIRMS hotspots")
+        window = st.selectbox("Observation window", FIRMS_WINDOWS, index=1, disabled=not enabled)
+        st.caption("NOAA-20 VIIRS thermal detections. Times are UTC. The layer can include non-wildfire heat sources.")
+        st.link_button("Open NASA FIRMS", "https://firms.modaps.eosdis.nasa.gov/map/")
+    if not enabled:
+        return [], ""
+    key = os.environ.get("FIRMS_MAP_KEY")
+    if not key:
+        try:
+            key = st.secrets.get("FIRMS_MAP_KEY")
+        except (FileNotFoundError, st.errors.StreamlitSecretNotFoundError):
+            key = None
+    if not key:
+        return [], "NASA FIRMS layer is unavailable until a server-side FIRMS_MAP_KEY is configured."
+    try:
+        with st.spinner("Loading NASA FIRMS observations…"):
+            points = _recent_hotspots(key, bounds, window)
+    except (OSError, ValueError, TypeError):
+        return [], "NASA FIRMS observations are temporarily unavailable. Map selection and Track-B remain available."
+    return points, f"NOAA-20 VIIRS · {window} · {len(points):,} observations in the map region."
+
+
+def _choose_place() -> None:
+    index = st.session_state["production_place_choice"]
+    st.session_state["explorer_selection"] = st.session_state["production_places"][index]
+    st.session_state["explorer_focus"] = True
+
+
+def _select_coordinates(latitude: float, longitude: float, *, focus: bool) -> None:
+    if math.isfinite(latitude) and math.isfinite(longitude) and -90 <= latitude <= 90 and -180 <= longitude <= 180:
+        st.session_state["explorer_selection"] = {
+            "name": "Selected location",
+            "latitude": latitude,
+            "longitude": longitude,
+        }
+        st.session_state["explorer_focus"] = focus
+
+
+def _search_explorer() -> None:
+    with st.form("production_place_search", border=False):
+        search_field, search_action, athens_action = st.columns([5, 1.25, 1.25], vertical_alignment="bottom")
+        query = search_field.text_input("City or municipality", placeholder="Try Athens, Greece")
+        with search_action:
+            submitted = st.form_submit_button("Search place", type="primary", width="stretch")
+        with athens_action:
+            athens = st.form_submit_button("Use Athens", help="Select Athens city centre for a new live run.", width="stretch")
+    if submitted or athens:
+        places = []
+        if athens:
+            places = [{"name": "Athens, Greece", "latitude": 37.9755648, "longitude": 23.7348324}]
+        else:
+            try:
+                with st.spinner("Finding matching places…"):
+                    places = load_place_search().search(query)
+                if not places:
+                    st.info("No match. Try a city and country, pick a point on the map, or enter coordinates.")
+            except PlaceSearchError as exc:
+                st.error(f"Place search unavailable. Use the map or enter coordinates. {exc}")
+        st.session_state["production_places"] = places
+        st.session_state["production_place_choice"] = 0
+        if places:
+            _choose_place()
+    places = st.session_state.get("production_places", [])
+    if len(places) > 1:
+        st.selectbox("Matching places", range(len(places)), format_func=lambda i: places[i]["name"],
+                     key="production_place_choice", on_change=_choose_place)
+
+
+def _run_location_analysis(point: dict | None, geo: CompactStaticFeatureProvider | None, result_slot) -> None:
+    with result_slot:
+        if point is None:
+            st.subheader("Location briefing")
+            st.write("Search for a place or select a point on the map to start.")
+            return
+        name, lat, lon = point["name"], point["latitude"], point["longitude"]
+        previous = st.session_state.get("explorer_result")
+        if previous is not None and (previous["latitude"], previous["longitude"], previous["resolved_place"]) != (lat, lon, name):
+            st.session_state.pop("explorer_result", None)
+        st.caption(f"{name} · {lat:.5f}, {lon:.5f}")
+        if geo is None:
+            st.error("Greece model coverage is unavailable. Restore the compact geography artifact before running analysis.")
+            return
+        try:
+            _, _, location = geo.fetch_static(lat, lon, date.today().year)
+        except FireCubeInferenceError as exc:
+            st.warning(f"Analysis unavailable at this location. {exc}.")
+            return
+        st.caption(f"Eligible FireCube land cell · Model unit {location['unit_id']:,}")
+        service = load_production_service(historical=False)
+        if service is None:
+            st.error("Prediction assets are unavailable. Run `python -m src.check_setup` for details.")
+            return
+        if st.button("Get experimental score", type="primary", key="production_predict_live", width="stretch"):
+            st.session_state.pop("explorer_result", None)
+            try:
+                with st.spinner("Collecting recent inputs and running Track-B…"):
+                    result = service.predict_recent(lat, lon)
+                st.session_state["explorer_result"] = {**result, "resolved_place": name}
+            except (FireCubeInferenceError, ValueError, OSError, RuntimeError) as exc:
+                st.error(f"Prediction unavailable. {exc}")
+                st.info("Retry this location or switch to the Recorded Athens demo.")
+        result = st.session_state.get("explorer_result")
+        if result is not None:
+            _dashboard_result(result, service, historical=False, show_map=False)
+
+
+def live_explorer() -> None:
+    st.markdown("<header class='explorer-head'><div class='brand'>ForestSentinels · Greece</div>"
+                "<h1>Wildfire map explorer</h1></header>", unsafe_allow_html=True)
+    with st.container(key="explorer_controls"):
         mode = st.radio("Choose how to explore", ["Place search", "Coordinates", "Recorded Athens demo"],
-                        horizontal=True, key="explore_mode")
-        if mode == "Recorded Athens demo":
+                        horizontal=True, key="explore_mode", label_visibility="collapsed")
+        recorded = mode == "Recorded Athens demo"
+        if recorded:
             example = _load_json(ROOT / "examples" / "athens-2026-11-21.json")
             if example is None:
                 st.error("The recorded Athens example is unavailable in this installation.")
                 return
-            st.info("Saved Athens run from 21 November 2026 UTC. All readings and the score below come from that recording.")
-            _dashboard_result({**example, "recorded_demo": True}, None, False)
-            return
+            st.info("Saved Athens run from 21 November 2026 UTC. All briefing readings and the score come from that recording.")
+        elif mode == "Place search":
+            _search_explorer()
+        else:
+            with st.form("explorer_coordinate_form", border=False):
+                c1, c2, c3 = st.columns(3, vertical_alignment="bottom")
+                prior = st.session_state.get("explorer_selection", {"latitude": 38.0, "longitude": 23.7})
+                lat = c1.number_input("Latitude", min_value=-90.0, max_value=90.0, value=prior["latitude"], format="%.5f")
+                lon = c2.number_input("Longitude", min_value=-180.0, max_value=180.0, value=prior["longitude"], format="%.5f")
+                with c3:
+                    if st.form_submit_button("Show on map"):
+                        _select_coordinates(lat, lon, focus=True)
+    point = example if recorded else st.session_state.get("explorer_selection")
+    try:
+        geo = load_explorer_geography()
+        layer = _explorer_coverage()
+    except StaticArtifactError:
+        geo = None
+        layer = {"bounds": [[34.3, 18.7], [42.3, 28.9]], "image": None}
+    with st.container(key="explorer_layout"):
+        left, right = st.columns([2.35, 1.25], vertical_alignment="top")
+        with left, st.container(key="explorer_map_pane"):
+            controls = st.container(horizontal=True, vertical_alignment="center")
+            with controls:
+                show_coverage = st.toggle("Model coverage", value=True, disabled=geo is None)
+                points, satellite_note = _hotspots_for_map(layer["bounds"]) if not recorded else ([], "")
+            map_event = explorer_map(data={
+                "bounds": layer["bounds"], "coverage": layer["image"], "showCoverage": show_coverage and geo is not None,
+                "selection": [point["latitude"], point["longitude"]] if point else None,
+                "focusSelection": recorded or st.session_state.get("explorer_focus", False),
+                "allowPick": not recorded, "hotspots": points,
+            })
+            legend = ["<span><i class='legend-coverage'></i>Eligible land cells</span>"] if show_coverage and geo else []
+            if point:
+                legend.append("<span><i class='legend-selection'></i>Selected point</span>")
+            if points:
+                legend.append("<span><i class='legend-hotspot'></i>Satellite thermal detection</span>")
+            if legend:
+                st.markdown("<div class='explorer-legend'>" + "".join(legend) + "</div>", unsafe_allow_html=True)
+            if satellite_note:
+                st.caption(satellite_note)
+            if not recorded:
+                st.caption("Click the map to select a point · Place search by OpenStreetMap Nominatim")
+        with right:
+            briefing = st.container(key="explorer_briefing", border=True)
+        if not recorded and getattr(map_event, "pick", None) is not None:
+            _select_coordinates(*map_event.pick, focus=False)
+            st.rerun()
+        if recorded:
+            with briefing:
+                _dashboard_result({**example, "recorded_demo": True}, None, historical=False, show_map=False)
+        else:
+            _run_location_analysis(point, geo, briefing)
 
-    selected_place = None
-    if not historical and mode == "Place search":
-        with st.form("production_place_search"):
-            query = st.text_input("City or municipality", placeholder="Try Athens, Greece")
-            submitted = st.form_submit_button("Search place", type="primary")
-        if st.button("Use Athens", help="Select Athens city centre for a new live run."):
-            st.session_state.pop("production_result", None)
-            st.session_state.pop("production_place_choice", None)
-            st.session_state["production_places"] = [
-                {"name": "Athens, Greece", "latitude": 37.9755648, "longitude": 23.7348324}
-            ]
-        if submitted:
-            st.session_state.pop("production_result", None)
-            st.session_state.pop("production_place_choice", None)
-            st.session_state["production_places"] = []
-            try:
-                with st.spinner("Finding matching places…"):
-                    st.session_state["production_places"] = load_place_search().search(query)
-                if not st.session_state["production_places"]:
-                    st.info("No match. Try a city and country, select Use Athens, or enter coordinates.")
-            except PlaceSearchError as exc:
-                st.error(f"Search unavailable. Select Use Athens or enter coordinates. {exc}")
-        places = st.session_state.get("production_places", [])
-        if not places:
-            with st.expander("How it works"):
-                st.write("Select a Greek location. The pipeline checks the land grid, builds 35 model inputs using ten completed UTC days and static geography, and returns an experimental score.")
-            st.caption("Place search uses OpenStreetMap Nominatim · © OpenStreetMap contributors")
-            return
-        index = st.selectbox("Matching places", range(len(places)), format_func=lambda i: places[i]["name"], key="production_place_choice")
-        selected_place = places[index]
-        latitude, longitude = selected_place["latitude"], selected_place["longitude"]
-        st.caption(f"Selected coordinate · {latitude:.5f}, {longitude:.5f} (latitude, longitude) · © OpenStreetMap contributors")
-    else:
-        col1, col2 = st.columns(2)
-        latitude = col1.number_input("Latitude", min_value=34.0, max_value=43.0, value=38.0, step=0.01, format="%.4f", key="production_latitude")
-        longitude = col2.number_input("Longitude", min_value=18.0, max_value=29.5, value=23.7, step=0.01, format="%.4f", key="production_longitude")
-        if historical:
-            target_date = st.date_input("Historical target date", value=date(2020, 7, 15), key="production_historical_date")
-    supported_box = 34.0 <= latitude <= 43.0 and 18.0 <= longitude <= 29.5
-    if not supported_box:
-        st.warning("This place is outside the supported Greece bounding area. Choose a Greece location or enter supported coordinates.")
-    elif not historical:
-        st.caption("Land-cell eligibility is checked by the existing inference pipeline when you run the prediction.")
-    service = load_production_service(historical)
+
+def production_section(historical: bool = False) -> None:
+    if not historical:
+        live_explorer()
+        return
+
+    st.subheader("Revisit a FireCube-era date")
+    st.info("Local historical inference only · Greece FireCube domain · example: 38.0000°N, 23.7000°E on 2020-07-15.")
+    c1, c2, c3 = st.columns(3)
+    lat = c1.number_input("Latitude", min_value=34.0, max_value=43.0, value=38.0, step=0.01, format="%.4f", key="production_latitude")
+    lon = c2.number_input("Longitude", min_value=18.0, max_value=29.5, value=23.7, step=0.01, format="%.4f", key="production_longitude")
+    target_date = c3.date_input("Historical target date", value=date(2020, 7, 15), key="production_historical_date").isoformat()
+    service = load_production_service(historical=True)
     if service is None:
-        required = "local FireCube dataset" if historical else "models/production/greece_static_v1.npz and its matching .json manifest"
-        st.error(f"Prediction assets are unavailable or incompatible. Check the saved models, preprocessor and {required}. Run python -m src.check_setup{' --historical' if historical else ''} for details.")
+        st.error("Historical replay needs the local FireCube dataset and saved Track-B assets. Run `python -m src.check_setup --historical` for details.")
         return
-    label = "Run historical prediction" if historical else "Get experimental score"
-    if st.button(label, type="primary", key="production_predict_historical" if historical else "production_predict_live", disabled=not supported_box):
-        try:
-            with st.spinner("Collecting available inputs and evaluating the saved XGBoost model…"):
-                result = (service.predict(float(latitude), float(longitude), target_date.isoformat()) if historical
-                          else service.predict_recent(float(latitude), float(longitude)))
-            result["resolved_place"] = selected_place["name"] if selected_place else "Manual coordinates"
-            st.session_state["production_result"] = result
-            st.session_state["production_result_mode"] = "historical" if historical else "live"
-        except (FireCubeInferenceError, ValueError, OSError, RuntimeError) as exc:
-            st.session_state.pop("production_result", None)
-            st.error(f"Prediction unavailable for this request: {exc}")
-            recovery = "Check the local cube and selected date." if historical else "Retry this location or open Recorded Athens demo to see a saved result."
-            st.info(recovery)
-    result = st.session_state.get("production_result")
-    if result is not None and (
-        abs(result.get("latitude", float("nan")) - latitude) > 1e-7
-        or abs(result.get("longitude", float("nan")) - longitude) > 1e-7
-        or (historical and result.get("target_date") != target_date.isoformat())
-        or not supported_box
-    ):
-        result = None
+    if st.button("Run historical prediction", type="primary", key="production_predict_historical"):
         st.session_state.pop("production_result", None)
-    if result is None or st.session_state.get("production_result_mode") != ("historical" if historical else "live"):
-        return
-    _dashboard_result(result, service, historical)
+        try:
+            with st.spinner("Running historical Track-B replay…"):
+                st.session_state["production_result"] = service.predict(lat, lon, target_date)
+        except (FireCubeInferenceError, ValueError, OSError, RuntimeError) as exc:
+            st.error(f"Historical prediction unavailable. {exc}")
+    result = st.session_state.get("production_result")
+    if result is not None:
+        if (result["latitude"], result["longitude"], result["target_date"]) == (lat, lon, target_date):
+            _dashboard_result(result, service, historical=True)
+        else:
+            st.session_state.pop("production_result", None)
 
 
 def main() -> None:
-    st.set_page_config(page_title="ForestSentinels | Location briefing", page_icon="🌲", layout="wide", initial_sidebar_state="auto")
+    st.set_page_config(page_title="ForestSentinels | Wildfire map explorer", page_icon="🌲", layout="wide", initial_sidebar_state="collapsed")
     _demo_styles()
     with st.sidebar:
         st.markdown("### ForestSentinels")

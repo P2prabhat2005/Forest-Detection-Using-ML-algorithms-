@@ -6,6 +6,6 @@ netCDF4>=1.7
 matplotlib>=3.8
 joblib>=1.4
 pillow>=10.0
-streamlit>=1.36
+streamlit>=1.63
 torch>=2.2
 torchvision>=0.17

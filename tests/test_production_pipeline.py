@@ -3,12 +3,14 @@
 from datetime import date, timedelta
 
 import numpy as np
+import pytest
 
 from src.firecube_live import DailyValues, ProviderStatus
 from src.production_features import (
     FEATURE_COUNT,
     ProductionFeaturePipeline,
     ProductionPreprocessor,
+    _CombinedLiveProvider,
     production_feature_names,
 )
 
@@ -52,3 +54,26 @@ def test_preprocessor_fits_and_rejects_wrong_schema():
     transformed, missing = prep.transform(raw[:1])
     assert transformed.shape == (1, FEATURE_COUNT)
     assert bool(missing[0, 2]) is True
+
+
+def test_live_weather_history_uses_unimputed_values_and_excludes_target_day(monkeypatch):
+    def weather_window(self, latitude, longitude, dates):
+        return [
+            DailyValues(day, {
+                "max_t2m": 293.15, "max_tp": float("nan") if day == dates[1] else 0.004,
+                "max_wind_speed": 10,
+            }, ProviderStatus("open-meteo", True, "fixture"))
+            for day in dates
+        ]
+
+    monkeypatch.setattr(_CombinedLiveProvider, "fetch_window", weather_window)
+    pipeline = ProductionFeaturePipeline(_CombinedLiveProvider(), StaticStub())
+    request = pipeline.build(38, 23.7, date(2026, 11, 22)).as_dict()
+    history = request["weather_history"]
+    assert len(history) == 10
+    assert (history[0]["date"], history[-1]["date"]) == ("2026-11-12", "2026-11-21")
+    assert history[0]["temperature_c"] == pytest.approx(20)
+    assert history[0]["peak_hourly_precipitation_mm"] == pytest.approx(4)
+    assert history[0]["wind_kmh"] == pytest.approx(36)
+    assert history[1]["peak_hourly_precipitation_mm"] is None
+    assert request["raw_feature_values"]["max_tp__mean10"] == pytest.approx(0.004)

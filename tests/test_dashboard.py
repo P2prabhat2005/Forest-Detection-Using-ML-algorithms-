@@ -143,3 +143,18 @@ def test_recorded_athens_briefing_and_return_to_search():
     assert not app.exception and not app.number_input
     assert not app.button(key="production_predict_live").disabled
     assert not app.get("download_button")
+
+
+def test_map_explorer_rejects_water_before_inference_and_shows_missing_key(monkeypatch):
+    monkeypatch.delenv("FIRMS_MAP_KEY", raising=False)
+    app = AppTest.from_file(str(APP), default_timeout=60).run()
+    app.secrets = {}
+    app.toggle[1].set_value(True).run()
+    assert any("FIRMS_MAP_KEY" in note.value for note in app.caption)
+    app.radio(key="explore_mode").set_value("Coordinates").run()
+    app.number_input[0].set_value(36.0)
+    app.number_input[1].set_value(25.0)
+    next(b for b in app.button if b.label == "Show on map").click().run()
+    assert not app.exception
+    assert any("non-land FireCube cell" in warning.value for warning in app.warning)
+    assert not any(b.key == "production_predict_live" for b in app.button)
